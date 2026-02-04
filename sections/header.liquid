@@ -1,4 +1,4 @@
-<div class="fixed top-0 left-0 right-0 z-50 bg-white backdrop-blur-xl shadow-lg">
+<div id="header" class="fixed top-0 left-0 right-0 z-50 transition-all duration-300">
   <div class="mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex justify-between items-center py-4">
       
@@ -73,9 +73,32 @@
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
   }
+  
+  #header.scrolled {
+    background-color: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
 </style>
 
 <script>
+  // Scroll-based blur effect
+  let lastScroll = 0;
+  const header = document.getElementById('header');
+  
+  window.addEventListener('scroll', function() {
+    const currentScroll = window.pageYOffset;
+    
+    if (currentScroll > 50) {
+      header.classList.add('scrolled');
+    } else {
+      header.classList.remove('scrolled');
+    }
+    
+    lastScroll = currentScroll;
+  });
+  
   // Mobile menu toggle functionality
   document.getElementById('mobile-menu-toggle').addEventListener('click', function() {
     const mobileMenu = document.getElementById('mobile-menu');
