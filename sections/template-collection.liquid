@@ -38,6 +38,9 @@
                     <span class="text-gray-500 line-through ml-2">{{ product.compare_at_price | money }}</span>
                   {% endif %}
                 </p>
+                {% unless product.available %}
+                  <span class="text-red-900 font-semibold text-sm uppercase tracking-wide">Sold Out</span>
+                {% endunless %}
               </div>
             </a>
           </div>
