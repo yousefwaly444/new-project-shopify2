@@ -2,6 +2,8 @@ module.exports = {
   content: ["./**/*.liquid", "./**/*.js"], // all files Tailwind should scan
   safelist: [
     "bg-black",
+    "bg-gray-700/40",
+    "bg-gray-900/50",
     "text-white",
     "text-red-900",
     "blur-sm",
