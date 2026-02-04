@@ -20,12 +20,12 @@
 
       <!-- CENTER: STORE NAME / LOGO -->
      <div class="absolute left-1/2 transform -translate-x-1/2">
-  <a href="{{ routes.root_url }}" class="text-2xl font-bold text-black tracking-wider">
+  <a href="{{ routes.root_url }}" class="text-2xl font-bold text-white tracking-wider">
     {% if section.settings.logo %}
     <img src="{{ section.settings.logo | image_url: width: 200, height: 50 }}" 
            alt="{{ shop.name }}" 
            width="200"
-           height="50"
+           height="200"
            class="h-8">
     {% else %}
       {{ shop.name }}
