@@ -1,3 +1,34 @@
+<!-- Banner Section -->
+{% if section.settings.show_banner and section.settings.banner_image %}
+<div class="relative w-full overflow-hidden mb-8" style="height: {{ section.settings.banner_height }}px;">
+    <img 
+        src="{{ section.settings.banner_image | image_url: width: 1920 }}" 
+        alt="{{ section.settings.banner_heading | escape }}"
+        class="w-full h-full object-cover"
+        loading="lazy"
+    >
+    
+    <!-- Banner Overlay -->
+    <div class="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
+        <div class="text-center px-4">
+            {% if section.settings.banner_heading != blank %}
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">{{ section.settings.banner_heading }}</h1>
+            {% endif %}
+            
+            {% if section.settings.banner_subheading != blank %}
+                <p class="text-xl md:text-2xl text-white mb-6">{{ section.settings.banner_subheading }}</p>
+            {% endif %}
+            
+            {% if section.settings.banner_button_text != blank and section.settings.banner_button_link != blank %}
+                <a href="{{ section.settings.banner_button_link }}" class="inline-block px-8 py-3 bg-white text-black font-semibold rounded hover:bg-gray-100 transition-colors">
+                    {{ section.settings.banner_button_text }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endif %}
+
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
     {% if section.settings.title != blank %}
         <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">{{ section.settings.title }}</h2>
@@ -29,10 +60,61 @@
     "name": "Featured Collection",
     "settings": [
         {
+            "type": "header",
+            "content": "Banner Settings"
+        },
+        {
+            "type": "checkbox",
+            "id": "show_banner",
+            "label": "Show banner",
+            "default": true
+        },
+        {
+            "type": "image_picker",
+            "id": "banner_image",
+            "label": "Banner image"
+        },
+        {
+            "type": "range",
+            "id": "banner_height",
+            "min": 300,
+            "max": 800,
+            "step": 50,
+            "default": 500,
+            "label": "Banner height (px)"
+        },
+        {
+            "type": "text",
+            "id": "banner_heading",
+            "label": "Banner heading",
+            "default": "Special Collection"
+        },
+        {
+            "type": "text",
+            "id": "banner_subheading",
+            "label": "Banner subheading",
+            "default": "Limited time offers"
+        },
+        {
+            "type": "text",
+            "id": "banner_button_text",
+            "label": "Button text",
+            "default": "Shop Now"
+        },
+        {
+            "type": "url",
+            "id": "banner_button_link",
+            "label": "Button link"
+        },
+        {
+            "type": "header",
+            "content": "Collection Settings"
+        },
+        {
             "type": "text",
             "id": "title",
             "default": "Featured Collection",
-            "label": "Title"
+            "label": "Collection title"
         },
         {
             "type": "collection",
