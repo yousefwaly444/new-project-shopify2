@@ -54,7 +54,7 @@
   </div>
 
   <!-- MOBILE MENU DROPDOWN -->
-  <div id="mobile-menu" class="hidden backdrop-blur-xl border-t border-gray-600" style="background-color: rgba(255, 255, 255, 0);">
+  <div id="mobile-menu" class="hidden backdrop-blur-xl border-t border-gray-600">
     <nav class="px-6 py-4 space-y-3">
       {% for link in linklists.main-menu.links %}
         <a href="{{ link.url }}" class="block text-black hover:text-gray-600 font-medium transition-colors py-2">
@@ -79,6 +79,12 @@
     backdrop-filter: blur(20px) saturate(180%);
     -webkit-backdrop-filter: blur(20px) saturate(180%);
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  #mobile-menu {
+    background-color: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
   }
 </style>
 
