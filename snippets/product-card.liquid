@@ -1,5 +1,5 @@
 <div class="shrink-0 w-56 max-w-full">
-  <div class="border border-gray-200 bg-white shadow-md rounded-lg overflow-hidden h-full flex flex-col">
+  <div class="border border-gray-200 bg-white shadow-md rounded-xl overflow-hidden h-full flex flex-col">
     <a href="{{ product_product.url }}" class="block flex-1">
       <div class="aspect-square overflow-hidden bg-gray-100">
         {% if product_product.featured_image %}
@@ -21,7 +21,7 @@
         <div class="flex items-center justify-center gap-2">
           {% if product_product.compare_at_price > product_product.price %}
             <span class="font-bold text-black">{{ product_product.price | money }}</span>
-            <span class="text-gray-500 line-through text-sm">{{ product_product.compare_at_price | money }}</span>
+            <span class="text-gray-500 line-through decoration-slate-300 text-sm">{{ product_product.compare_at_price | money }}</span>
           {% else %}
             <span class="font-bold text-black">{{ product_product.price | money }}</span>
           {% endif %}

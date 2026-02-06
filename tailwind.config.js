@@ -29,6 +29,7 @@ module.exports = {
     "grid-cols-4",
     "sm:grid-cols-2",
     "md:flex",
+    "decoration-slate-300",
     "md:h-18",
     "md:hidden",
     "lg:grid-cols-3",

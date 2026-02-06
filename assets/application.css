@@ -14,6 +14,7 @@
     --color-yellow-600: oklch(68.1% 0.162 75.834);
     --color-blue-600: oklch(54.6% 0.245 262.881);
     --color-blue-800: oklch(42.4% 0.199 265.638);
+    --color-slate-300: oklch(86.9% 0.022 252.894);
     --color-gray-50: oklch(98.5% 0.002 247.839);
     --color-gray-100: oklch(96.7% 0.003 264.542);
     --color-gray-200: oklch(92.8% 0.006 264.531);
@@ -765,6 +766,9 @@
   }
   .underline {
     text-decoration-line: underline;
+  }
+  .decoration-slate-300 {
+    text-decoration-color: var(--color-slate-300);
   }
   .shadow-md {
     --tw-shadow: 0 4px 6px -1px var(--tw-shadow-color, rgb(0 0 0 / 0.1)), 0 2px 4px -2px var(--tw-shadow-color, rgb(0 0 0 / 0.1));
