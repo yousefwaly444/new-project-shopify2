@@ -31,12 +31,9 @@
     
     <div class="p-4 pt-0">
       {% if product_product.available %}
-        <form action="{{ routes.cart_add_url }}" method="post" class="block">
-          <input type="hidden" name="id" value="{{ product_product.selected_or_first_available_variant.id }}">
-          <button type="submit" name="add" class="w-full py-3 bg-black text-white font-bold rounded-lg hover:bg-gray-800 transition-colors">
-            Add to cart
-          </button>
-        </form>
+        <button type="button" class="add-to-cart-btn w-full py-3 bg-black text-white font-bold rounded-lg hover:bg-gray-800 transition-colors" data-variant-id="{{ product_product.selected_or_first_available_variant.id }}">
+          Add to cart
+        </button>
       {% else %}
         <button disabled class="w-full py-3 bg-gray-400 text-white font-bold rounded-lg cursor-not-allowed">
           Sold out
