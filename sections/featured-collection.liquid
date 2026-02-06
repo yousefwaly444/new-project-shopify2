@@ -31,29 +31,67 @@
 </div>
 {% endif %}
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
     {% if section.settings.title != blank %}
         <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">{{ section.settings.title }}</h2>
     {% endif %}
 
-    {% if section.settings.featured_collection != blank %}
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
-            {% for product in section.settings.featured_collection.products limit: section.settings.number_of_products_to_show %}
-                {% render 'product-card', product_product: product %}
+    <div class="relative">
+        <!-- Carousel Navigation - Prev -->
+        <button type="button" id="carousel-prev-{{ section.id }}" class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-2 z-10 w-10 h-10 bg-white border border-gray-200 rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors" aria-label="Previous">
+            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        
+        <!-- Carousel Navigation - Next -->
+        <button type="button" id="carousel-next-{{ section.id }}" class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-2 z-10 w-10 h-10 bg-white border border-gray-200 rounded-full shadow-md flex items-center justify-center hover:bg-gray-50 transition-colors" aria-label="Next">
+            <svg class="w-5 h-5 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+        </button>
+
+        <!-- Carousel Container -->
+        <div id="carousel-{{ section.id }}" class="flex overflow-x-auto gap-6 pb-4 scroll-smooth snap-x snap-mandatory hide-scrollbar" style="scrollbar-width: none; -ms-overflow-style: none;">
+            {% if section.settings.featured_collection != blank %}
+                {% for product in section.settings.featured_collection.products limit: section.settings.number_of_products_to_show %}
+                    {% render 'product-card', product_product: product %}
+                {% else %}
+                    {% for item in (1..4) %}
+                        {% render 'product-card-placeholder' %}
+                    {% endfor %}
+                {% endfor %}
             {% else %}
                 {% for item in (1..4) %}
                     {% render 'product-card-placeholder' %}
                 {% endfor %}
-            {% endfor %}
+            {% endif %}
         </div>
-    {% else %}
-        <div class="grid grid-cols-2 md:grid-cols-4 gap-6 lg:gap-8">
-            {% for item in (1..4) %}
-                {% render 'product-card-placeholder' %}
-            {% endfor %}
-        </div>
-    {% endif %}
+    </div>
 </div>
+
+<style>
+  #carousel-{{ section.id }} .shrink-0 { scroll-snap-align: start; }
+  .hide-scrollbar::-webkit-scrollbar { display: none; }
+</style>
+
+<script>
+  (function() {
+    const carousel = document.getElementById('carousel-{{ section.id }}');
+    const prevBtn = document.getElementById('carousel-prev-{{ section.id }}');
+    const nextBtn = document.getElementById('carousel-next-{{ section.id }}');
+    
+    if (!carousel || !prevBtn || !nextBtn) return;
+    
+    const cardWidth = 296;
+    const gap = 24;
+    const scrollAmount = cardWidth + gap;
+    
+    prevBtn.addEventListener('click', function() {
+      carousel.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+    });
+    
+    nextBtn.addEventListener('click', function() {
+      carousel.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+    });
+  })();
+</script>
 
 
 
