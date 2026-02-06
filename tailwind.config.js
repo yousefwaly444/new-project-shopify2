@@ -43,6 +43,7 @@ module.exports = {
     "border-amber-600",
     "border-yellow-600",
     "w-32",
+    "w-56",
     "w-72",
     "shrink-0",
     "scroll-smooth",
