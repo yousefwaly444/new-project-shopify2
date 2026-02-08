@@ -1,0 +1,199 @@
+{% assign current_variant = product.selected_or_first_available_variant %}
+{% assign featured_image = current_variant.featured_image | default: product.featured_image %}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
+    
+    <!-- Left: Image Gallery -->
+      
+      <div class="relative">
+        <!-- Zoom/Search Icon -->
+        <button type="button" class="absolute top-4 right-4 z-10 w-10 h-10 bg-black rounded-full flex items-center justify-center text-white hover:bg-gray-800 transition-colors" aria-label="Zoom">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </button>
+        
+        <!-- Main Image -->
+        <div id="product-main-image" class="aspect-square bg-gray-100 rounded-lg overflow-hidden">
+          {% if featured_image %}
+            <img src="{{ featured_image | image_url: width: 800 }}" alt="{{ featured_image.alt | escape }}" width="800" height="800" class="w-full h-full object-cover">
+          {% else %}
+            {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
+          {% endif %}
+        </div>
+        
+        <!-- Thumbnail Gallery -->
+        {% if product.images.size > 1 %}
+          <div class="flex gap-2 mt-4 overflow-x-auto pb-2">
+            {% for image in product.images %}
+              <button type="button" class="product-thumb shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 {% if image == featured_image %}border-black{% else %}border-gray-200{% endif %}" data-image-url="{{ image | image_url: width: 800 }}">
+                <img src="{{ image | image_url: width: 100 }}" alt="{{ image.alt | escape }}" width="100" height="100" class="w-full h-full object-cover">
+              </button>
+            {% endfor %}
+          </div>
+        {% endif %}
+        
+        <!-- Carousel Pagination Dots -->
+        {% if product.images.size > 1 %}
+          <div class="flex justify-center gap-2 mt-4">
+            {% for image in product.images %}
+              <button type="button" class="product-dot w-2 h-2 rounded-full {% if image == featured_image %}bg-gray-900{% else %}bg-white border border-gray-300{% endif %}" data-index="{{ forloop.index0 }}" aria-label="View image {{ forloop.index }}"></button>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    
+    <!-- Right: Product Details -->
+    <div class="space-y-6">
+      <h1 class="text-3xl md:text-4xl font-bold text-gray-900">{{ product.title }}</h1>
+      
+      <!-- Price -->
+      <div class="flex items-baseline gap-3">
+        <span class="text-2xl font-bold text-gray-900">{{ current_variant.price | money }}</span>
+        {% if current_variant.compare_at_price > current_variant.price %}
+          <span class="text-xl text-gray-500 line-through">{{ current_variant.compare_at_price | money }}</span>
+        {% endif %}
+      </div>
+      
+      <!-- Stock Status -->
+      <div class="flex items-center gap-2">
+        {% if current_variant.available %}
+          <span class="w-2 h-2 rounded-full bg-green-500"></span>
+          <span class="text-gray-900">In Stock</span>
+        {% else %}
+          <span class="w-2 h-2 rounded-full bg-red-500"></span>
+          <span class="text-gray-900">Sold Out</span>
+        {% endif %}
+      </div>
+      
+      <!-- Payment Info (Klarna placeholder) -->
+      {% if section.settings.show_klarna %}
+        <p class="text-gray-900"><strong>Order today</strong> and pay later with Klarna</p>
+      {% endif %}
+      
+      <!-- Delivery & Returns -->
+      <div class="space-y-2">
+        <div class="flex items-center gap-2 text-gray-900">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+          <span>Free express delivery</span>
+        </div>
+        <div class="flex items-center gap-2 text-gray-900">
+          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
+          <span>Easy return policy</span>
+        </div>
+      </div>
+      
+      <!-- Add to Cart Form -->
+      <form action="{{ routes.cart_add_url }}" method="post" id="product-form" class="space-y-4 product-add-form">
+        <input type="hidden" name="id" id="product-variant-id" value="{{ current_variant.id }}">
+        
+        <!-- Variant Selector (if multiple) -->
+        {% if product.variants.size > 1 %}
+          <div>
+            <label class="block text-sm font-medium text-gray-900 mb-2">Variant</label>
+            <select name="id" id="variant-select" class="w-full border border-gray-300 rounded-lg px-4 py-3">
+              {% for variant in product.variants %}
+                <option value="{{ variant.id }}" {% unless variant.available %}disabled{% endunless %}>
+                  {{ variant.title }} - {{ variant.price | money }}{% unless variant.available %} (Sold out){% endunless %}
+                </option>
+              {% endfor %}
+            </select>
+          </div>
+        {% endif %}
+        
+        <!-- Quantity & Add to Cart - side by side -->
+        <div style="display: flex; flex-direction: row; gap: 12px; align-items: stretch;">
+          <div style="display: flex; border: 1px solid #d1d5db; border-radius: 12px; background: #fff; overflow: hidden;">
+            <button type="button" id="qty-minus" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; font-size: 20px; color: #1f2937;">−</button>
+            <input type="number" name="quantity" id="quantity" value="1" min="1" max="5" class="product-qty-input" style="width: 56px; height: 48px; text-align: center; border: none; border-left: 1px solid #d1d5db; border-right: 1px solid #d1d5db; font-size: 16px; -moz-appearance: textfield;">
+            <button type="button" id="qty-plus" style="width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; font-size: 20px; color: #1f2937;">+</button>
+          </div>
+      
+          <button type="submit" name="add" id="add-to-cart-product" class="add-to-cart-btn" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 8px; padding: 14px 24px; background: #000; color: #fff; font-weight: bold; border-radius: 12px; border: none; cursor: pointer; min-width: 0;" data-variant-id="{{ current_variant.id }}">
+            <svg style="width: 20px; height: 20px; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            Add to cart
+          </button>
+        </div>
+        
+        <button type="submit" form="product-form" formaction="{{ routes.cart_add_url }}?return_to=/checkout" name="add" style="width: 100%; margin-top: 12px; padding: 14px 24px; background: #000; color: #fff; font-weight: bold; border-radius: 12px; border: none; cursor: pointer;">
+          Buy it now
+        </button>
+      </form>
+      
+      <!-- Description -->
+      {% if product.description != blank %}
+        <div class="pt-6 border-t border-gray-200">
+          <h3 class="text-lg font-bold text-gray-900 mb-2">Description</h3>
+          <div class="text-gray-600 prose max-w-none">{{ product.description }}</div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+  .product-qty-input::-webkit-outer-spin-button,
+  .product-qty-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  #qty-minus:hover, #qty-plus:hover { background: #f3f4f6 !important; }
+  .add-to-cart-btn:hover { background: #374151 !important; }
+</style>
+<script>
+  (function() {
+    const form = document.getElementById('product-form');
+    const qtyInput = document.getElementById('quantity');
+    const qtyMinus = document.getElementById('qty-minus');
+    const qtyPlus = document.getElementById('qty-plus');
+    
+    if (qtyMinus) qtyMinus.addEventListener('click', () => { qtyInput.value = Math.max(1, parseInt(qtyInput.value) - 1); });
+    if (qtyPlus) qtyPlus.addEventListener('click', () => { qtyInput.value = parseInt(qtyInput.value || 1) + 1; });
+    
+    document.querySelectorAll('.product-thumb').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const url = this.dataset.imageUrl;
+        const mainImg = document.querySelector('#product-main-image img');
+        if (mainImg && url) mainImg.src = url;
+        document.querySelectorAll('.product-thumb').forEach(b => b.classList.remove('border-black'));
+        document.querySelectorAll('.product-dot').forEach(d => { d.classList.remove('bg-gray-900'); d.classList.add('bg-white', 'border', 'border-gray-300'); });
+        this.classList.add('border-black');
+        const idx = Array.from(document.querySelectorAll('.product-thumb')).indexOf(this);
+        const dot = document.querySelector(`.product-dot[data-index="${idx}"]`);
+        if (dot) { dot.classList.add('bg-gray-900'); dot.classList.remove('bg-white', 'border', 'border-gray-300'); }
+      });
+    });
+    
+    document.querySelectorAll('.product-dot').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const idx = parseInt(this.dataset.index);
+        const thumb = document.querySelectorAll('.product-thumb')[idx];
+        if (thumb) thumb.click();
+      });
+    });
+    
+    const variantSelect = document.getElementById('variant-select');
+    const variantInput = document.getElementById('product-variant-id');
+    if (variantSelect && variantInput) {
+      variantSelect.addEventListener('change', function() {
+        variantInput.value = this.value;
+      });
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product Page",
+  "settings": [
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline above images",
+      "default": "Featured Product"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_klarna",
+      "label": "Show Klarna payment message",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

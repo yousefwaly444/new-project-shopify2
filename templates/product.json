@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "prouduct-page",
+      "settings": {
+        "headline": "",
+        "show_klarna": true
+      }
+    }
+  },
+  "order": ["main"]
+}
