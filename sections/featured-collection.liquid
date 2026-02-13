@@ -1,6 +1,6 @@
-<!-- Banner Section -->
+<!-- Banner Section - Desktop -->
 {% if section.settings.show_banner and section.settings.banner_image %}
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-4 hidden md:block">
 <div class="relative w-full overflow-hidden rounded-3xl" style="height: {{ section.settings.banner_height }}px; border-radius: 1.5rem;">
     <img 
         src="{{ section.settings.banner_image | image_url: width: 1920 }}" 
@@ -34,7 +34,50 @@
 </div>
 {% endif %}
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 {% if section.settings.show_banner and section.settings.banner_image %}pt-6{% else %}pt-10{% endif %} pb-10">
+<!-- Banner Section - Mobile -->
+{% if section.settings.show_banner and section.settings.mobile_banner_image %}
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-4 md:hidden">
+<div class="relative w-full overflow-hidden rounded-3xl" style="height: {{ section.settings.mobile_banner_height }}px; border-radius: 1.5rem;">
+    <img 
+        src="{{ section.settings.mobile_banner_image | image_url: width: 768 }}" 
+        alt="{{ section.settings.banner_heading | escape }}"
+        width="768"
+        height="400"
+        class="w-full h-full object-cover"
+        style="border-radius: inherit;"
+        loading="lazy"
+    >
+    
+    <!-- Banner Overlay -->
+    <div class="absolute inset-0 flex items-center justify-center rounded-3xl" style="border-radius: inherit;">
+        <div class="text-center px-4">
+            {% if section.settings.banner_heading != blank %}
+                <h1 class="text-2xl md:text-5xl font-bold text-white mb-4">{{ section.settings.banner_heading }}</h1>
+            {% endif %}
+            
+            {% if section.settings.banner_subheading != blank %}
+                <p class="text-lg md:text-2xl text-white mb-6">{{ section.settings.banner_subheading }}</p>
+            {% endif %}
+            
+            {% if section.settings.banner_button_text != blank and section.settings.banner_button_link != blank %}
+                <a href="{{ section.settings.banner_button_link }}" class="inline-block px-6 py-2 bg-black text-white font-semibold rounded-2xl hover:bg-gray-800 transition-colors">
+                    {{ section.settings.banner_button_text }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+</div>
+{% endif %}
+
+{% assign has_any_banner = false %}
+{% if section.settings.show_banner %}
+  {% if section.settings.banner_image or section.settings.mobile_banner_image %}
+    {% assign has_any_banner = true %}
+  {% endif %}
+{% endif %}
+
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 {% if has_any_banner %}pt-6{% else %}pt-10{% endif %} pb-10">
     {% if section.settings.show_title and section.settings.title != blank %}
         <h2 class="text-3xl font-bold text-gray-900 text-center mb-8">{{ section.settings.title }}</h2>
     {% endif %}
@@ -115,7 +158,7 @@
         {
             "type": "image_picker",
             "id": "banner_image",
-            "label": "Banner image"
+            "label": "Desktop banner image"
         },
         {
             "type": "range",
@@ -124,7 +167,21 @@
             "max": 800,
             "step": 50,
             "default": 500,
-            "label": "Banner height (px)"
+            "label": "Desktop banner height (px)"
+        },
+        {
+            "type": "image_picker",
+            "id": "mobile_banner_image",
+            "label": "Mobile banner image"
+        },
+        {
+            "type": "range",
+            "id": "mobile_banner_height",
+            "min": 200,
+            "max": 600,
+            "step": 50,
+            "default": 400,
+            "label": "Mobile banner height (px)"
         },
         {
             "type": "text",
