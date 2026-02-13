@@ -1,18 +1,19 @@
 <!-- Banner Section -->
 {% if section.settings.show_banner and section.settings.banner_image %}
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-4">
-<div class="relative w-full overflow-hidden rounded-3xl" style="height: {{ section.settings.banner_height }}px;">
+<div class="relative w-full overflow-hidden rounded-3xl" style="height: {{ section.settings.banner_height }}px; border-radius: 1.5rem;">
     <img 
         src="{{ section.settings.banner_image | image_url: width: 1920 }}" 
         alt="{{ section.settings.banner_heading | escape }}"
         width="1920"
         height="500"
         class="w-full h-full object-cover"
+        style="border-radius: inherit;"
         loading="lazy"
     >
     
     <!-- Banner Overlay -->
-    <div class="absolute inset-0 flex items-center justify-center rounded-3xl ">
+    <div class="absolute inset-0 flex items-center justify-center rounded-3xl" style="border-radius: inherit;">
         <div class="text-center px-4">
             {% if section.settings.banner_heading != blank %}
                 <h1 class="text-4xl md:text-5xl font-bold text-white mb-4">{{ section.settings.banner_heading }}</h1>
