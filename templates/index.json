@@ -34,14 +34,15 @@
         "show_banner": true,
         "banner_image": "shopify://shop_images/i-want-banner-of-a-gentle-man-pick-up-pefrume.png",
         "banner_height": 350,
+        "mobile_banner_image": "shopify://shop_images/i-want-banner-of-a-gentle-man-pick-up-pefrume.png",
         "mobile_banner_height": 400,
         "banner_heading": "Special Collection",
         "banner_subheading": "Limited time offers",
         "banner_button_text": "Shop Now",
-        "banner_button_link": "",
+        "banner_button_link": "shopify://collections/woman-collection",
         "show_title": false,
         "title": "Featured Collection",
-        "featured_collection": "",
+        "featured_collection": "woman-collection",
         "number_of_products_to_show": 4
       }
     }
