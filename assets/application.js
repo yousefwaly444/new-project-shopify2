@@ -1,9 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".add-to-cart-btn").forEach(button => {
       button.addEventListener("click", async (e) => {
-        const form = button.closest("form.product-add-form");
-        if (form) e.preventDefault();
+        e.preventDefault();
         
+        const form = button.closest("form.product-add-form");
         const variantId = form ? document.getElementById("product-variant-id")?.value : button.dataset.variantId;
         const quantity = form ? parseInt(document.getElementById("quantity")?.value || 1) : 1;
 

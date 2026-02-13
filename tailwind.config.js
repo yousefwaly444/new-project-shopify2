@@ -9,8 +9,14 @@ module.exports = {
     "border-gray-600",
     "border-3",
     "border-4",
+    "rounded-2xl",
     "border-amber-600",
     "border-yellow-600",
+    "w-90%",
+    "rounded-3xl",
+    "w-full",
+    "w-95%",
+    "w-3/4",
     "w-32",
     "h-32",
     "rounded",
@@ -21,6 +27,7 @@ module.exports = {
     "sm:flex-row",
     "inline-block",
     "my-4",
+    "rounded-xl",
     "mt-4"
   ],
   theme: {
@@ -31,6 +38,9 @@ module.exports = {
       },
       spacing: {
         18: '4.5rem', // example custom spacing
+      },
+      borderRadius: {
+        '3xl': '1.5rem', // 24px rounded corners
       }
     },
   },
