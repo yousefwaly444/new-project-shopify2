@@ -20,10 +20,20 @@
             "duration": "30 – 50 min",
             "note_label": "Top"
           }
+        },
+        "fragrance_note_VdRhqd": {
+          "type": "fragrance_note",
+          "settings": {
+            "icon": "shopify://shop_images/nutrition-icon.svg",
+            "subtitle": "Lightest First Impression",
+            "duration": "1 – 2 h",
+            "note_label": "base"
+          }
         }
       },
       "block_order": [
-        "fragrance_note_L3z9gJ"
+        "fragrance_note_L3z9gJ",
+        "fragrance_note_VdRhqd"
       ],
       "settings": {
         "headline": "",
