@@ -64,22 +64,20 @@
           <span class="text-gray-900">Sold Out</span>
         {% endif %}
       </div>
-      
-      <!-- Payment Info (Klarna placeholder) -->
-      {% if section.settings.show_klarna %}
-        <p class="text-gray-900"><strong>Order today</strong> and pay later with Klarna</p>
-      {% endif %}
-      
       <!-- Delivery & Returns -->
       <div class="space-y-2">
-        <div class="flex items-center gap-2 text-gray-900">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
-          <span>Free express delivery</span>
-        </div>
-        <div class="flex items-center gap-2 text-gray-900">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
-          <span>Easy return policy</span>
-        </div>
+        {% if section.settings.delivery_text != blank %}
+          <div class="flex items-center gap-2 text-gray-900">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
+            <span>{{ section.settings.delivery_text }}</span>
+          </div>
+        {% endif %}
+        {% if section.settings.returns_text != blank %}
+          <div class="flex items-center gap-2 text-gray-900">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
+            <span>{{ section.settings.returns_text }}</span>
+          </div>
+        {% endif %}
       </div>
       
       <!-- Add to Cart Form -->
@@ -100,18 +98,19 @@
           </div>
         {% endif %}
         
-        <!-- Quantity stepper -->
-        <div style="display: inline-flex; border: 1px solid #d1d5db; border-radius: 12px; background: #fff; overflow: hidden;">
-          <button type="button" id="qty-minus" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; font-size: 22px; color: #1f2937; line-height: 1;">−</button>
-          <input type="number" name="quantity" id="quantity" value="1" min="1" max="5" class="product-qty-input" style="width: 52px; height: 44px; text-align: center; border: none; border-left: 1px solid #d1d5db; border-right: 1px solid #d1d5db; font-size: 15px; font-weight: 600; -moz-appearance: textfield;">
-          <button type="button" id="qty-plus" style="width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; font-size: 22px; color: #1f2937; line-height: 1;">+</button>
-        </div>
+        <!-- Quantity stepper + Add to Cart -->
+        <div style="display: flex; flex-direction: row; gap: 12px; align-items: stretch;">
+          <div style="display: inline-flex; border: 1px solid #d1d5db; border-radius: 12px; background: #fff; overflow: hidden; flex-shrink: 0;">
+            <button type="button" id="qty-minus" style="width: 44px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; font-size: 22px; color: #1f2937; line-height: 1;">−</button>
+            <input type="number" name="quantity" id="quantity" value="1" min="1" max="5" class="product-qty-input" style="width: 52px; text-align: center; border: none; border-left: 1px solid #d1d5db; border-right: 1px solid #d1d5db; font-size: 15px; font-weight: 600; -moz-appearance: textfield;">
+            <button type="button" id="qty-plus" style="width: 44px; display: flex; align-items: center; justify-content: center; background: none; border: none; cursor: pointer; font-size: 22px; color: #1f2937; line-height: 1;">+</button>
+          </div>
 
-        <!-- Add to Cart – full width -->
-        <button type="button" id="add-to-cart-product" class="add-to-cart-btn" style="width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 24px; background: #000; color: #fff; font-weight: bold; font-size: 1rem; border-radius: 12px; border: none; cursor: pointer; white-space: nowrap;" data-variant-id="{{ current_variant.id }}">
-          <svg style="width: 20px; height: 20px; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
-          Add to cart
-        </button>
+          <button type="button" id="add-to-cart-product" class="add-to-cart-btn" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 15px 24px; background: #000; color: #fff; font-weight: bold; font-size: 1rem; border-radius: 12px; border: none; cursor: pointer; white-space: nowrap;" data-variant-id="{{ current_variant.id }}">
+            <svg style="width: 20px; height: 20px; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+            Add to cart
+          </button>
+        </div>
         
         <button type="submit" form="product-form" formaction="{{ routes.cart_add_url }}?return_to=/checkout" name="add" style="width: 100%; margin-top: 12px; padding: 14px 24px; background: #000; color: #fff; font-weight: bold; border-radius: 12px; border: none; cursor: pointer;">
           Buy it now
@@ -302,6 +301,18 @@
       "id": "fragrance_heading",
       "label": "Fragrance notes heading",
       "default": "Fragrance Notes"
+    },
+    {
+      "type": "text",
+      "id": "delivery_text",
+      "label": "Delivery badge text",
+      "default": "Free express delivery"
+    },
+    {
+      "type": "text",
+      "id": "returns_text",
+      "label": "Returns badge text",
+      "default": "Easy return policy"
     }
   ],
   "blocks": [
