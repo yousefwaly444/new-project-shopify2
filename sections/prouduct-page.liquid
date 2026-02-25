@@ -121,34 +121,74 @@
       </form>
       
       <!-- Fragrance Notes -->
-      {% assign note_blocks = section.blocks | where: 'type', 'fragrance_note' %}
-      {% if note_blocks.size > 0 %}
+      {% liquid
+        assign fn_notes = product.metafields.fragrance.notes.value
+        assign fn_icons = product.metafields.fragrance.icons.value
+        assign note_blocks = section.blocks | where: 'type', 'fragrance_note'
+        if fn_notes != blank
+          assign use_metafields = true
+        elsif note_blocks.size > 0
+          assign use_metafields = false
+        endif
+      %}
+      {% if use_metafields != nil %}
         <div class="fn-section pt-6 border-t border-gray-200">
           {% if section.settings.fragrance_heading != blank %}
             <h2 class="fn-heading">{{ section.settings.fragrance_heading }}</h2>
           {% endif %}
           <div class="fn-grid">
-            {% for block in note_blocks %}
-              <div class="fn-card" {{ block.shopify_attributes }}>
-                <span class="fn-card__subtitle">{{ block.settings.subtitle }}</span>
-                {% if block.settings.icon != blank %}
-                  <div class="fn-card__icon">
-                    <img
-                      src="{{ block.settings.icon | image_url: width: 80, height: 80 }}"
-                      alt="{{ block.settings.subtitle | escape }}"
-                      width="80"
-                      height="80"
-                    >
-                  </div>
-                {% else %}
-                  <div class="fn-card__icon fn-card__icon--placeholder">
-                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
-                  </div>
+
+            {% if use_metafields %}
+              {% for note in fn_notes %}
+                {% assign icon_ref = nil %}
+                {% if fn_icons != blank %}
+                  {% assign icon_ref = fn_icons[forloop.index0] %}
                 {% endif %}
-                <span class="fn-card__duration">{{ block.settings.duration }}</span>
-                <span class="fn-card__label">{{ block.settings.note_label }}</span>
-              </div>
-            {% endfor %}
+                <div class="fn-card">
+                  <span class="fn-card__subtitle">{{ note.subtitle }}</span>
+                  {% if icon_ref != blank %}
+                    <div class="fn-card__icon">
+                      <img
+                        src="{{ icon_ref | image_url: width: 80, height: 80 }}"
+                        alt="{{ note.subtitle | escape }}"
+                        width="80"
+                        height="80"
+                      >
+                    </div>
+                  {% else %}
+                    <div class="fn-card__icon fn-card__icon--placeholder">
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+                    </div>
+                  {% endif %}
+                  <span class="fn-card__duration">{{ note.duration }}</span>
+                  <span class="fn-card__label">{{ note.label }}</span>
+                </div>
+              {% endfor %}
+
+            {% else %}
+              {% for block in note_blocks %}
+                <div class="fn-card" {{ block.shopify_attributes }}>
+                  <span class="fn-card__subtitle">{{ block.settings.subtitle }}</span>
+                  {% if block.settings.icon != blank %}
+                    <div class="fn-card__icon">
+                      <img
+                        src="{{ block.settings.icon | image_url: width: 80, height: 80 }}"
+                        alt="{{ block.settings.subtitle | escape }}"
+                        width="80"
+                        height="80"
+                      >
+                    </div>
+                  {% else %}
+                    <div class="fn-card__icon fn-card__icon--placeholder">
+                      <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/></svg>
+                    </div>
+                  {% endif %}
+                  <span class="fn-card__duration">{{ block.settings.duration }}</span>
+                  <span class="fn-card__label">{{ block.settings.note_label }}</span>
+                </div>
+              {% endfor %}
+            {% endif %}
+
           </div>
         </div>
       {% endif %}
