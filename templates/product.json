@@ -1,12 +1,38 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "prouduct-page",
+      "blocks": {
+        "fragrance_note_L3z9gJ": {
+          "type": "fragrance_note",
+          "settings": {
+            "icon": "shopify://shop_images/fruit-icon_1.svg",
+            "subtitle": "Apple and mango",
+            "duration": "30 – 50 min",
+            "note_label": "Top"
+          }
+        }
+      },
+      "block_order": [
+        "fragrance_note_L3z9gJ"
+      ],
       "settings": {
         "headline": "",
-        "show_klarna": true
+        "show_klarna": true,
+        "fragrance_heading": "Fragrance Notes"
       }
     }
   },
-  "order": ["main"]
+  "order": [
+    "main"
+  ]
 }
