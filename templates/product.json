@@ -33,6 +33,15 @@
             "note_label": "Top"
           }
         },
+        "fragrance_note_YT6KBb": {
+          "type": "fragrance_note",
+          "settings": {
+            "icon": "shopify://shop_images/strawberry-fruit-icon_1.svg",
+            "subtitle": "strawberry",
+            "duration": "3 – 5 h",
+            "note_label": "middle"
+          }
+        },
         "fragrance_note_VdRhqd": {
           "type": "fragrance_note",
           "settings": {
@@ -47,11 +56,10 @@
         "badge_delivery",
         "badge_returns",
         "fragrance_note_L3z9gJ",
+        "fragrance_note_YT6KBb",
         "fragrance_note_VdRhqd"
       ],
       "settings": {
-        "headline": "",
-        "show_klarna": true,
         "fragrance_heading": "Fragrance Notes"
       }
     }
