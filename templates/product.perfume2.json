@@ -1,0 +1,67 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "prouduct-page",
+      "blocks": {
+        "badge_delivery": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Free express delivery"
+          }
+        },
+        "badge_returns": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Easy return policy"
+          }
+        },
+        "p2_note_top": {
+          "type": "fragrance_note",
+          "settings": {
+            "subtitle": "Top note",
+            "duration": "0 – 30 min",
+            "note_label": "Top"
+          }
+        },
+        "p2_note_middle": {
+          "type": "fragrance_note",
+          "settings": {
+            "subtitle": "Middle note",
+            "duration": "30 min – 2 h",
+            "note_label": "Middle"
+          }
+        },
+        "p2_note_base": {
+          "type": "fragrance_note",
+          "settings": {
+            "subtitle": "Base note",
+            "duration": "4+ h",
+            "note_label": "Base"
+          }
+        }
+      },
+      "block_order": [
+        "badge_delivery",
+        "badge_returns",
+        "p2_note_top",
+        "p2_note_middle",
+        "p2_note_base"
+      ],
+      "settings": {
+        "fragrance_heading": "Fragrance Notes"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
