@@ -12,6 +12,18 @@
     "main": {
       "type": "prouduct-page",
       "blocks": {
+        "badge_delivery": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Free express delivery"
+          }
+        },
+        "badge_returns": {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Easy return policy"
+          }
+        },
         "fragrance_note_L3z9gJ": {
           "type": "fragrance_note",
           "settings": {
@@ -32,6 +44,8 @@
         }
       },
       "block_order": [
+        "badge_delivery",
+        "badge_returns",
         "fragrance_note_L3z9gJ",
         "fragrance_note_VdRhqd"
       ],
