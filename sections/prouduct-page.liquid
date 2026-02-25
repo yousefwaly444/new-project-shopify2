@@ -64,21 +64,24 @@
           <span class="text-gray-900">Sold Out</span>
         {% endif %}
       </div>
-      <!-- Delivery & Returns -->
-      <div class="space-y-2">
-        {% if section.settings.delivery_text != blank %}
-          <div class="flex items-center gap-2 text-gray-900">
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"/></svg>
-            <span>{{ section.settings.delivery_text }}</span>
-          </div>
-        {% endif %}
-        {% if section.settings.returns_text != blank %}
-          <div class="flex items-center gap-2 text-gray-900">
-            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6"/></svg>
-            <span>{{ section.settings.returns_text }}</span>
-          </div>
-        {% endif %}
-      </div>
+      <!-- Delivery & Returns badges (blocks) -->
+      {% assign badge_blocks = section.blocks | where: 'type', 'badge' %}
+      {% if badge_blocks.size > 0 %}
+        <div class="space-y-2">
+          {% for block in badge_blocks %}
+            {% if block.settings.badge_text != blank %}
+              <div class="flex items-center gap-2 text-gray-900" {{ block.shopify_attributes }}>
+                {% if block.settings.badge_icon != blank %}
+                  <img src="{{ block.settings.badge_icon | image_url: width: 20, height: 20 }}" width="20" height="20" alt="" class="shrink-0">
+                {% else %}
+                  <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                {% endif %}
+                <span>{{ block.settings.badge_text }}</span>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+      {% endif %}
       
       <!-- Add to Cart Form -->
       <form action="{{ routes.cart_add_url }}" method="post" id="product-form" class="space-y-4 product-add-form">
@@ -282,7 +285,7 @@
 {% schema %}
 {
   "name": "Product Page",
-  "max_blocks": 3,
+  "max_blocks": 10,
   "settings": [
     {
       "type": "text",
@@ -302,20 +305,25 @@
       "label": "Fragrance notes heading",
       "default": "Fragrance Notes"
     },
-    {
-      "type": "text",
-      "id": "delivery_text",
-      "label": "Delivery badge text",
-      "default": "Free express delivery"
-    },
-    {
-      "type": "text",
-      "id": "returns_text",
-      "label": "Returns badge text",
-      "default": "Easy return policy"
-    }
   ],
   "blocks": [
+    {
+      "type": "badge",
+      "name": "Badge",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "badge_icon",
+          "label": "Icon (optional)"
+        },
+        {
+          "type": "text",
+          "id": "badge_text",
+          "label": "Badge text",
+          "default": "Badge text"
+        }
+      ]
+    },
     {
       "type": "fragrance_note",
       "name": "Fragrance Note Card",
@@ -350,6 +358,18 @@
     {
       "name": "Product Page",
       "blocks": [
+        {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Free express delivery"
+          }
+        },
+        {
+          "type": "badge",
+          "settings": {
+            "badge_text": "Easy return policy"
+          }
+        },
         {
           "type": "fragrance_note",
           "settings": {
