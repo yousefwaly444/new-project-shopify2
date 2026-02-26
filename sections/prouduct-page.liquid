@@ -150,6 +150,49 @@
         </div>
       {% endif %}
 
+      <!-- Product you may like -->
+      {% assign related_collection = product.collections.first %}
+      {% assign related_count = 0 %}
+      {% if related_collection and related_collection.products.size > 1 %}
+        <div class="pt-6 border-t border-gray-200">
+          {% if section.settings.related_heading != blank %}
+            <h2 class="text-lg font-bold text-gray-900 mb-4">{{ section.settings.related_heading }}</h2>
+          {% endif %}
+          <div class="grid grid-cols-2 gap-4">
+            {% for rec in related_collection.products %}
+              {% if rec.id != product.id and related_count < 4 %}
+                {% assign related_count = related_count | plus: 1 %}
+                {% assign rec_variant = rec.selected_or_first_available_variant %}
+                {% assign rec_compare = rec_variant.compare_at_price %}
+                {% assign rec_price = rec_variant.price %}
+                <a href="{{ rec.url }}" class="group block">
+                  <div class="relative aspect-square bg-gray-100 rounded-lg overflow-hidden mb-2">
+                    {% if rec_compare > rec_price and rec_compare > 0 %}
+                      {% assign rec_save = rec_compare | minus: rec_price | times: 100 | divided_by: rec_compare %}
+                      <span class="absolute top-2 left-2 z-10 px-2 py-0.5 text-xs font-bold text-white bg-red-600 rounded">
+                        {{ rec_save }}% off
+                      </span>
+                    {% endif %}
+                    {% if rec.featured_image %}
+                      <img src="{{ rec.featured_image | image_url: width: 400, height: 400 }}" alt="{{ rec.featured_image.alt | escape }}" width="400" height="400" class="w-full h-full object-cover group-hover:opacity-90 transition-opacity">
+                    {% else %}
+                      {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
+                    {% endif %}
+                  </div>
+                  <h3 class="text-sm font-semibold text-gray-900 truncate group-hover:underline">{{ rec.title }}</h3>
+                  <p class="text-sm font-bold text-gray-900">
+                    {{ rec_price | money }}
+                    {% if rec_compare > rec_price and rec_compare > 0 %}
+                      <span class="text-gray-500 font-normal line-through">{{ rec_compare | money }}</span>
+                    {% endif %}
+                  </p>
+                </a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
       <!-- Description -->
       {% if product.description != blank %}
         <div class="pt-6 border-t border-gray-200">
@@ -289,6 +332,12 @@
       "id": "fragrance_heading",
       "label": "Fragrance notes heading",
       "default": "Fragrance Notes"
+    },
+    {
+      "type": "text",
+      "id": "related_heading",
+      "label": "Product you may like heading",
+      "default": "Product you may like"
     }
   ],
   "blocks": [
