@@ -1,6 +1,6 @@
 <!-- Banner Section - Desktop -->
 {% if section.settings.show_banner and section.settings.banner_image %}
-<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 mb-4 hidden md:flex md:flex-col">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-4 hidden md:flex md:flex-col">
 <div class="relative w-full overflow-hidden rounded-3xl" style="height: {{ section.settings.banner_height }}px; border-radius: 1.5rem;">
     <img 
         src="{{ section.settings.banner_image | image_url: width: 1920 }}" 
