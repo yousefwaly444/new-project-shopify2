@@ -72,9 +72,17 @@
 
 <style>
   .banner-btn-glass {
-    background-color: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
+    position: relative;
+    z-index: 1;
+    /* Fallback when backdrop-filter not supported (e.g. theme customizer iframe) */
+    background-color: rgba(0, 0, 0, 0.4);
+  }
+  @supports (backdrop-filter: blur(20px)) or (-webkit-backdrop-filter: blur(20px)) {
+    .banner-btn-glass {
+      background-color: rgba(0, 0, 0, 0.25);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+    }
   }
   @media (min-width: 768px) {
     .mobile-banner-wrapper {
