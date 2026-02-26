@@ -14,7 +14,7 @@
       "settings": {
         "show_banner": true,
         "banner_image": "shopify://shop_images/with-out-any-text.png",
-        "banner_height": 450,
+        "banner_height": 500,
         "mobile_banner_image": "shopify://shop_images/luxury-fashion-campaign-photography-elegant-middle-eastern-woman-model-wearing-a-wide-white-sun-hat-and-a-white-polka-dot-dress-holding-a-premium-perfume-bottle-soft-natural-daylight.png",
         "mobile_banner_height": 400,
         "banner_heading": "Special Collection",
@@ -33,7 +33,7 @@
       "settings": {
         "show_banner": true,
         "banner_image": "shopify://shop_images/make-a-banner-men-hold-perfume.png",
-        "banner_height": 450,
+        "banner_height": 500,
         "mobile_banner_image": "shopify://shop_images/i-want-banner-of-a-gentle-man-pick-up-pefrume.png",
         "mobile_banner_height": 400,
         "banner_heading": "Special Collection",
