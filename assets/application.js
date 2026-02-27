@@ -34,8 +34,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const badge = document.getElementById("cart-count-badge");
             if (badge) badge.textContent = cart.item_count;
           }
-          // Open cart drawer so user can see cart (drawer content may refresh on next page load)
-          if (typeof window.openCartDrawer === "function") window.openCartDrawer();
         } catch (error) {
           button.textContent = "Error";
         }
