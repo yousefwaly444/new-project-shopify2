@@ -392,6 +392,15 @@
   }
 </style>
 
+{%- assign lux_currency_suffix = shop.money_format
+  | remove: '{{amount}}'
+  | remove: '{{amount_no_decimals}}'
+  | remove: '{{amount_with_comma_separator}}'
+  | remove: '{{amount_no_decimals_with_comma_separator}}'
+  | remove: '{{amount_with_apostrophe_separator}}'
+  | strip
+-%}
+
 <div class="lux-search">
 
   <!-- Search Bar -->
@@ -462,8 +471,7 @@
               </div>
               <div class="lux-grid__title">{{ item.title }}</div>
               {% if item.object_type == 'product' %}
-                {%- assign currency_symbol = shop.money_format | split: '{{amount}}' | first | strip -%}
-                <div class="lux-grid__price">{{ item.price | money_without_currency }} {{ currency_symbol }}</div>
+                <div class="lux-grid__price">{{ item.price | money_without_currency }} {{ lux_currency_suffix }}</div>
               {% endif %}
             </a>
           {% endfor %}
@@ -498,6 +506,8 @@
 
 <script>
 (function() {
+  var DEFAULT_CURRENCY_SUFFIX = {{ lux_currency_suffix | json }};
+
   var input = document.getElementById('lux-input');
   var live = document.getElementById('lux-live');
   var staticResults = document.getElementById('lux-static-results');
@@ -510,6 +520,22 @@
     var el = document.createElement('span');
     el.textContent = text;
     return el.innerHTML;
+  }
+
+  function normalizePrice(rawPrice) {
+    var raw = (rawPrice || '').toString().replace(/<[^>]*>/g, '').trim();
+    if (!raw) return '';
+
+    // Extract the first numeric "amount-like" token and treat the rest as currency.
+    var amountMatch = raw.match(/[0-9][0-9.,\s]*/);
+    var amount = amountMatch ? amountMatch[0].trim() : raw;
+    var currency = raw.replace(amount, '').trim();
+
+    // If suggest.json returns amount without a currency, fall back to the store’s money format symbol.
+    var suffix = (currency || DEFAULT_CURRENCY_SUFFIX || '').trim();
+    if (!suffix) return amount;
+
+    return (amount + ' ' + suffix).trim();
   }
 
   function getRootUrl() {
@@ -589,16 +615,7 @@
             var rawPrice = p.price || '';
             var href = (p.url || '').replace(/"/g, '&quot;');
             var img = (p.image || '').replace(/"/g, '&quot;');
-
-            // Move currency prefix to suffix: "LE 5,000.00" → "5,000.00 LE"
-            var price = rawPrice.replace(/^([^\d\s]+)\s*([\d,. ]+)$/, '$2 $1').trim();
-            if (price === rawPrice) {
-              // Fallback: strip leading non-numeric chars and append them
-              price = rawPrice.replace(/^([^0-9]*)([0-9].*)$/, function(m, curr, num) {
-                return num.trim() + ' ' + curr.trim();
-              });
-            }
-            price = escapeHtml(price);
+            var price = escapeHtml(normalizePrice(rawPrice));
 
             html += '<a href="' + href + '" class="lux-live__card">';
             html += '<div class="lux-live__card-img">';
