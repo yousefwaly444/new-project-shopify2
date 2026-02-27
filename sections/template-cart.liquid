@@ -5,150 +5,187 @@
 {% endif %}
 
 <style>
-  .cart-item-card { background: #fff; border-radius: 16px; border: 1px solid #f0f0f0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); overflow: hidden; }
-  .qty-btn { width: 32px; height: 32px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; font-size: 1.1rem; line-height: 1; display: flex; align-items: center; justify-content: center; cursor: pointer; color: #374151; transition: background 0.15s; }
+  .cart-page { max-width: 560px; margin: 0 auto; padding: 24px 16px 48px; }
+  .cart-card { background: #fff; border-radius: 18px; border: 1px solid #ebebeb; box-shadow: 0 2px 8px rgba(0,0,0,0.07); overflow: hidden; margin-bottom: 16px; }
+  .cart-item { padding: 18px; }
+  .cart-item + .cart-item { border-top: 1px solid #f0f0f0; }
+  .cart-item__img { width: 88px; height: 88px; border-radius: 12px; overflow: hidden; flex-shrink: 0; background: #f5f5f5; }
+  .cart-item__img img { width: 100%; height: 100%; object-fit: cover; }
+  .cart-item__remove { width: 32px; height: 32px; border-radius: 50%; background: #ef4444; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.15s; }
+  .cart-item__remove:hover { background: #dc2626; }
+  .cart-item__remove svg { width: 14px; height: 14px; stroke: #fff; stroke-width: 3; }
+  .cart-item__title { font-size: 15px; font-weight: 600; color: #111; line-height: 1.4; }
+  .cart-item__variant { font-size: 13px; color: #888; margin-top: 2px; }
+  .cart-item__price { display: flex; align-items: center; gap: 8px; margin-top: 6px; flex-wrap: wrap; }
+  .cart-item__original { font-size: 13px; color: #aaa; text-decoration: line-through; }
+  .cart-item__final { font-size: 15px; font-weight: 700; color: #111; }
+  .cart-item__bottom { display: flex; align-items: center; justify-content: space-between; margin-top: 14px; padding-top: 14px; border-top: 1px solid #f0f0f0; }
+  .qty-group { display: flex; align-items: center; gap: 0; border: 1.5px solid #d1d5db; border-radius: 12px; overflow: hidden; background: #fff; }
+  .qty-btn { width: 44px; height: 44px; border: none; background: transparent; font-size: 20px; font-weight: 400; color: #374151; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: background 0.12s; user-select: none; }
   .qty-btn:hover { background: #f3f4f6; }
-  .qty-input { width: 40px; text-align: center; border: none; font-size: 0.95rem; font-weight: 600; color: #111; background: transparent; outline: none; }
-  input[type=number]::-webkit-outer-spin-button,
-  input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .qty-btn:active { background: #e5e7eb; }
+  .qty-sep { width: 1px; height: 28px; background: #d1d5db; flex-shrink: 0; }
+  .qty-input { width: 48px; text-align: center; border: none; font-size: 16px; font-weight: 700; color: #111; background: transparent; outline: none; padding: 0; }
+  input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   input[type=number] { -moz-appearance: textfield; }
-  .remove-btn { width: 28px; height: 28px; border-radius: 50%; background: #ef4444; border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.15s; }
-  .remove-btn:hover { background: #dc2626; }
-  .rec-card { border: 1px solid #f0f0f0; border-radius: 12px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
-  .rec-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-  .order-summary-card { background: #fff; border-radius: 16px; border: 1px solid #f0f0f0; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-  .divider { border: none; border-top: 1px solid #f0f0f0; margin: 0; }
+  .cart-item__total { font-size: 15px; font-weight: 700; color: #111; }
+  .rec-section { background: #fff; border-radius: 18px; border: 1px solid #ebebeb; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 20px; margin-bottom: 16px; }
+  .rec-section h2 { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 16px; }
+  .rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .rec-card { border: 1px solid #ebebeb; border-radius: 14px; overflow: hidden; background: #fff; display: flex; flex-direction: column; }
+  .rec-card:hover { box-shadow: 0 4px 14px rgba(0,0,0,0.09); }
+  .rec-card__img { aspect-ratio: 1/1; background: #f5f5f5; overflow: hidden; }
+  .rec-card__img img { width: 100%; height: 100%; object-fit: cover; }
+  .rec-card__body { padding: 12px; display: flex; flex-direction: column; flex: 1; }
+  .rec-card__title { font-size: 13px; font-weight: 600; color: #111; line-height: 1.35; margin-bottom: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+  .rec-card__prices { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .rec-card__price { font-size: 14px; font-weight: 700; color: #111; }
+  .rec-card__compare { font-size: 12px; color: #aaa; text-decoration: line-through; }
+  .rec-card__btn { display: block; width: 100%; padding: 10px 0; background: #111; color: #fff; font-size: 13px; font-weight: 700; border: none; border-radius: 10px; cursor: pointer; text-align: center; transition: background 0.15s; margin-top: auto; }
+  .rec-card__btn:hover { background: #333; }
+  .summary-card { background: #fff; border-radius: 18px; border: 1px solid #ebebeb; box-shadow: 0 2px 8px rgba(0,0,0,0.07); overflow: hidden; margin-bottom: 16px; }
+  .summary-card__row { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px; }
+  .summary-card__label { font-size: 15px; color: #555; }
+  .summary-card__value { font-size: 15px; font-weight: 700; color: #111; }
+  .summary-card__divider { border: none; border-top: 1px solid #f0f0f0; margin: 0; }
+  .summary-card__section { padding: 18px 20px; }
+  .summary-card__promo-label { font-size: 15px; font-weight: 600; color: #111; margin-bottom: 12px; }
+  .summary-card__promo-row { display: flex; gap: 10px; }
+  .summary-card__promo-input { flex: 1; padding: 12px 14px; border: 1.5px solid #d1d5db; border-radius: 12px; font-size: 14px; outline: none; transition: border-color 0.15s; }
+  .summary-card__promo-input:focus { border-color: #111; }
+  .summary-card__apply { padding: 12px 20px; background: #111; color: #fff; font-size: 14px; font-weight: 700; border: none; border-radius: 12px; cursor: pointer; white-space: nowrap; transition: background 0.15s; }
+  .summary-card__apply:hover { background: #333; }
+  .summary-card__total-label { font-size: 16px; font-weight: 700; color: #111; }
+  .summary-card__total-value { font-size: 22px; font-weight: 800; color: #111; }
+  .summary-card__submit { display: block; width: 100%; padding: 17px; background: #111; color: #fff; font-size: 17px; font-weight: 800; border: none; border-radius: 14px; cursor: pointer; text-align: center; transition: background 0.15s; }
+  .summary-card__submit:hover { background: #333; }
+  .empty-card { background: #fff; border-radius: 18px; border: 1px solid #ebebeb; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 60px 32px; text-align: center; }
 </style>
 
-<div class="max-w-lg mx-auto px-4 py-8">
+<div class="cart-page">
   {% if cart.item_count == 0 %}
-    <div class="order-summary-card px-6 py-16 text-center">
-      <div class="w-16 h-16 mx-auto mb-5 rounded-full bg-gray-100 flex items-center justify-center">
-        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-        </svg>
+    <div class="empty-card">
+      <div style="width:72px;height:72px;background:#f5f5f5;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+        <svg width="36" height="36" fill="none" stroke="#aaa" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
       </div>
-      <h2 class="text-xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
-      <p class="text-gray-500 mb-8 text-sm">Add products to your cart to see them here.</p>
-      <a href="{{ routes.root_url }}" class="inline-block px-8 py-3 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition-colors">Continue shopping</a>
+      <h2 style="font-size:22px;font-weight:800;color:#111;margin-bottom:8px;">Your cart is empty</h2>
+      <p style="font-size:15px;color:#888;margin-bottom:32px;">Add products to your cart to see them here.</p>
+      <a href="{{ routes.root_url }}" style="display:inline-block;padding:14px 36px;background:#111;color:#fff;font-size:15px;font-weight:700;border-radius:14px;text-decoration:none;">Continue shopping</a>
     </div>
 
   {% else %}
-    <div class="space-y-4">
-
-      <!-- Cart items -->
-      <form action="{{ routes.cart_url }}" method="post" id="cart-form">
+    <!-- Cart items -->
+    <form action="{{ routes.cart_url }}" method="post" id="cart-form">
+      <div class="cart-card">
         {% for item in cart.items %}
-          <div class="cart-item-card p-4">
-            <!-- Top row: image + details + remove -->
-            <div class="flex items-start gap-3">
-              <a href="{{ item.url }}" class="shrink-0 w-20 h-20 rounded-xl overflow-hidden bg-gray-50">
+          <div class="cart-item">
+            <div style="display:flex;gap:14px;align-items:flex-start;">
+              <a href="{{ item.url }}" class="cart-item__img">
                 {% if item.image %}
-                  <img src="{{ item.image | image_url: width: 160, height: 160 }}" alt="{{ item.title | escape }}" width="80" height="80" class="w-full h-full object-cover">
+                  <img src="{{ item.image | image_url: width: 176, height: 176 }}" alt="{{ item.title | escape }}" width="88" height="88">
                 {% else %}
                   {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
                 {% endif %}
               </a>
-              <div class="flex-1 min-w-0">
-                <div class="flex items-start justify-between gap-2">
-                  <a href="{{ item.url }}" class="font-semibold text-gray-900 text-sm leading-snug hover:text-gray-600 transition-colors line-clamp-2">{{ item.product.title }}</a>
-                  <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" class="remove-btn shrink-0 ml-1" aria-label="Remove {{ item.product.title }}">
-                    <svg class="w-3.5 h-3.5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M6 18L18 6M6 6l12 12" />
-                    </svg>
+              <div style="flex:1;min-width:0;">
+                <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px;">
+                  <a href="{{ item.url }}" class="cart-item__title" style="text-decoration:none;">{{ item.product.title }}</a>
+                  <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" class="cart-item__remove" aria-label="Remove {{ item.product.title }}">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 18L18 6M6 6l12 12"/></svg>
                   </a>
                 </div>
                 {% if item.variant.title != 'Default Title' %}
-                  <p class="text-xs text-gray-500 mt-0.5">{{ item.variant.title }}</p>
+                  <p class="cart-item__variant">{{ item.variant.title }}</p>
                 {% endif %}
-                <div class="flex items-center gap-2 mt-1.5 flex-wrap">
+                <div class="cart-item__price">
                   {% if item.original_price > item.final_price %}
-                    <span class="text-xs text-gray-400 line-through">{{ item.original_price | money }}</span>
+                    <span class="cart-item__original">{{ item.original_price | money }}</span>
                   {% endif %}
-                  <span class="text-sm font-bold text-gray-900">{{ item.final_price | money }}</span>
+                  <span class="cart-item__final">{{ item.final_price | money }}</span>
                 </div>
               </div>
             </div>
-            <!-- Bottom row: qty + total -->
-            <div class="flex items-center justify-between mt-4 pt-3 border-t border-gray-100">
-              <div class="flex items-center gap-2">
-                <label for="qty-{{ forloop.index }}" class="sr-only">Quantity</label>
+            <div class="cart-item__bottom">
+              <div class="qty-group">
                 <button type="button" class="cart-qty-minus qty-btn" data-line="{{ forloop.index }}" aria-label="Decrease">−</button>
+                <div class="qty-sep"></div>
+                <label for="qty-{{ forloop.index }}" class="sr-only">Quantity</label>
                 <input type="number" name="updates[]" id="qty-{{ forloop.index }}" value="{{ item.quantity }}" min="0" class="qty-input">
+                <div class="qty-sep"></div>
                 <button type="button" class="cart-qty-plus qty-btn" data-line="{{ forloop.index }}" aria-label="Increase">+</button>
               </div>
-              <span class="text-sm font-semibold text-gray-700">Total: {{ item.final_line_price | money }}</span>
+              <span class="cart-item__total">Total: {{ item.final_line_price | money }}</span>
             </div>
           </div>
         {% endfor %}
-      </form>
+      </div>
+    </form>
 
-      <!-- Recommendations -->
-      {% if rec_collection.products.size > 0 %}
-        <div class="order-summary-card p-5">
-          <h2 class="text-base font-bold text-gray-900 mb-4">Great choices before completing your order</h2>
-          <div class="grid grid-cols-2 gap-3">
-            {% for product in rec_collection.products limit: 4 %}
-              <div class="rec-card">
-                <a href="{{ product.url }}" class="block aspect-square bg-gray-50">
-                  {% if product.featured_image %}
-                    <img src="{{ product.featured_image | image_url: width: 300, height: 300 }}" alt="{{ product.featured_image.alt | escape }}" width="150" height="150" class="w-full h-full object-cover">
-                  {% else %}
-                    {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
-                  {% endif %}
-                </a>
-                <div class="p-3 flex flex-col flex-1">
-                  <a href="{{ product.url }}" class="text-sm font-medium text-gray-900 line-clamp-2 hover:text-gray-600 mb-1">{{ product.title }}</a>
-                  <div class="flex items-center gap-1.5 flex-wrap mb-3">
-                    <span class="text-sm font-bold text-gray-900">{{ product.price | money }}</span>
-                    {% if product.compare_at_price > product.price %}
-                      <span class="text-xs text-gray-400 line-through">{{ product.compare_at_price | money }}</span>
-                    {% endif %}
-                  </div>
-                  {% if product.available %}
-                    <button type="button" class="add-to-cart-btn w-full py-2 bg-gray-900 text-white text-xs font-semibold rounded-lg hover:bg-gray-800 transition-colors mt-auto" data-variant-id="{{ product.selected_or_first_available_variant.id }}">Add to cart</button>
-                  {% else %}
-                    <span class="w-full py-2 text-center text-xs text-gray-400 bg-gray-100 rounded-lg mt-auto">Sold out</span>
+    <!-- Recommendations -->
+    {% if rec_collection.products.size > 0 %}
+      <div class="rec-section">
+        <h2>Great choices before completing your order</h2>
+        <div class="rec-grid">
+          {% for product in rec_collection.products limit: 4 %}
+            <div class="rec-card">
+              <a href="{{ product.url }}" class="rec-card__img">
+                {% if product.featured_image %}
+                  <img src="{{ product.featured_image | image_url: width: 300, height: 300 }}" alt="{{ product.featured_image.alt | escape }}" width="150" height="150">
+                {% else %}
+                  {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
+                {% endif %}
+              </a>
+              <div class="rec-card__body">
+                <a href="{{ product.url }}" class="rec-card__title" style="text-decoration:none;">{{ product.title }}</a>
+                <div class="rec-card__prices">
+                  <span class="rec-card__price">{{ product.price | money }}</span>
+                  {% if product.compare_at_price > product.price %}
+                    <span class="rec-card__compare">{{ product.compare_at_price | money }}</span>
                   {% endif %}
                 </div>
+                {% if product.available %}
+                  <button type="button" class="add-to-cart-btn rec-card__btn" data-variant-id="{{ product.selected_or_first_available_variant.id }}">Add to cart</button>
+                {% else %}
+                  <span class="rec-card__btn" style="background:#e5e7eb;color:#9ca3af;cursor:default;">Sold out</span>
+                {% endif %}
               </div>
-            {% endfor %}
-          </div>
-        </div>
-      {% endif %}
-
-      <!-- Order Summary -->
-      <div class="order-summary-card overflow-hidden">
-        <div class="p-5">
-          <h2 class="text-base font-bold text-gray-900">Order Summary</h2>
-        </div>
-        <hr class="divider">
-        <div class="p-5 flex justify-between items-center">
-          <span class="text-sm text-gray-600">Total items amount</span>
-          <span class="text-sm font-semibold text-gray-900">{{ cart.total_price | money }}</span>
-        </div>
-        <hr class="divider">
-        <div class="p-5">
-          <p class="text-sm font-medium text-gray-700 mb-3">Do you have a promo code?</p>
-          <form action="{{ routes.cart_url }}" method="post" class="flex gap-2">
-            <input type="text" name="checkout[coupon]" placeholder="Apply Coupon" class="flex-1 px-3 py-2.5 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-gray-900 focus:border-transparent">
-            <button type="submit" class="px-4 py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-xl hover:bg-gray-800 transition-colors whitespace-nowrap">Apply</button>
-          </form>
-        </div>
-        <hr class="divider">
-        <div class="p-5 flex justify-between items-center">
-          <span class="text-sm font-semibold text-gray-900">Final total amount</span>
-          <span class="text-lg font-bold text-gray-900">{{ cart.total_price | money }}</span>
-        </div>
-        <hr class="divider">
-        <div class="p-5">
-          <form action="{{ routes.cart_url }}" method="post">
-            <button type="submit" name="checkout" class="w-full py-4 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transition-colors text-base">Submit order</button>
-          </form>
+            </div>
+          {% endfor %}
         </div>
       </div>
+    {% endif %}
 
+    <!-- Order Summary -->
+    <div class="summary-card">
+      <div class="summary-card__row">
+        <span style="font-size:18px;font-weight:800;color:#111;">Order Summary</span>
+      </div>
+      <hr class="summary-card__divider">
+      <div class="summary-card__row">
+        <span class="summary-card__label">Total items amount</span>
+        <span class="summary-card__value">{{ cart.total_price | money }}</span>
+      </div>
+      <hr class="summary-card__divider">
+      <div class="summary-card__section">
+        <p class="summary-card__promo-label">Do you have a promo code?</p>
+        <form action="{{ routes.cart_url }}" method="post" class="summary-card__promo-row">
+          <input type="text" name="checkout[coupon]" placeholder="Apply Coupon" class="summary-card__promo-input">
+          <button type="submit" class="summary-card__apply">Apply</button>
+        </form>
+      </div>
+      <hr class="summary-card__divider">
+      <div class="summary-card__row">
+        <span class="summary-card__total-label">Final total amount</span>
+        <span class="summary-card__total-value">{{ cart.total_price | money }}</span>
+      </div>
+      <hr class="summary-card__divider">
+      <div class="summary-card__section">
+        <form action="{{ routes.cart_url }}" method="post">
+          <button type="submit" name="checkout" class="summary-card__submit">Submit order</button>
+        </form>
+      </div>
     </div>
+
   {% endif %}
 </div>
 
