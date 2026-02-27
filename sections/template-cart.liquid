@@ -25,10 +25,11 @@
   .qty-btn:hover { background: #f3f4f6; }
   .qty-btn:active { background: #e5e7eb; }
   .qty-sep { width: 1px; height: 28px; background: #d1d5db; flex-shrink: 0; }
-  .qty-input { width: 48px; text-align: center; border: none; font-size: 16px; font-weight: 700; color: #111; background: transparent; outline: none; padding: 0; }
+  .qty-cell { display: flex; align-items: center; justify-content: center; min-width: 56px; }
+  .qty-input { width: 40px; text-align: center; border: none; font-size: 16px; font-weight: 700; color: #111; background: transparent; outline: none; padding: 0; }
   input[type=number]::-webkit-outer-spin-button, input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   input[type=number] { -moz-appearance: textfield; }
-  .cart-item__total { font-size: 15px; font-weight: 700; color: #111; }
+  .cart-item__total { font-size: 15px; font-weight: 700; color: #111; flex-shrink: 0; margin-left: 14px; white-space: nowrap; }
   .rec-section { background: #fff; border-radius: 18px; border: 1px solid #ebebeb; box-shadow: 0 2px 8px rgba(0,0,0,0.07); padding: 20px; margin-bottom: 16px; }
   .rec-section h2 { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 16px; }
   .rec-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -109,9 +110,9 @@
               <div class="qty-group">
                 <button type="button" class="cart-qty-minus qty-btn" data-line="{{ forloop.index }}" aria-label="Decrease">−</button>
                 <div class="qty-sep"></div>
-                <div class="qty-middle">
-                  <label for="qty-{{ forloop.index }}" class="sr-only">Quantity</label>
-                  <input type="number" name="updates[]" id="qty-{{ forloop.index }}" value="{{ item.quantity }}" min="0" class="qty-input">
+                <div class="qty-cell">
+                  <label for="qty-{{ forloop.index }}" class="visually-hidden">Quantity</label>
+                  <input type="number" name="updates[]" id="qty-{{ forloop.index }}" value="{{ item.quantity }}" min="0" class="qty-input" aria-label="Quantity">
                 </div>
                 <div class="qty-sep"></div>
                 <button type="button" class="cart-qty-plus qty-btn" data-line="{{ forloop.index }}" aria-label="Increase">+</button>
