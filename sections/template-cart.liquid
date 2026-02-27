@@ -5,25 +5,43 @@
 {% endif %}
 
 <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-  <h1 class="text-2xl md:text-3xl font-bold text-gray-900 mb-8">Your cart</h1>
+  <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+    <h1 class="text-2xl md:text-3xl font-bold tracking-tight text-gray-900">
+      {% if cart.item_count == 0 %}
+        Your cart
+      {% else %}
+        Your cart <span class="text-gray-400 font-normal">({{ cart.item_count }} {% if cart.item_count == 1 %}item{% else %}items{% endif %})</span>
+      {% endif %}
+    </h1>
+    {% if cart.item_count > 0 %}
+      <a href="{{ routes.root_url }}" class="text-sm font-medium text-gray-600 hover:text-gray-900 transition-colors">Continue shopping</a>
+    {% endif %}
+  </div>
 
   {% if cart.item_count == 0 %}
-    <div class="bg-white rounded-3xl border border-gray-200 shadow-sm px-12 pt-12 pb-8 md:px-16 md:pt-16 md:pb-10 text-center">
-      <p class="text-2xl font-bold text-gray-900 mb-3">Your cart is empty</p>
-      <p class="text-gray-500 mb-8 max-w-md mx-auto">Add products to your cart to see them here.</p>
-      <a href="{{ routes.root_url }}" class="inline-block mb-2 px-8 py-4 bg-black text-white font-semibold rounded-xl hover:bg-gray-800">Continue shopping</a>
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-12 md:px-16 md:py-20 text-center">
+      <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gray-100 flex items-center justify-center">
+        <svg class="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+        </svg>
+      </div>
+      <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-2">Your cart is empty</h2>
+      <p class="text-gray-500 mb-8 max-w-sm mx-auto text-sm md:text-base">Add products to your cart to see them here.</p>
+      <a href="{{ routes.root_url }}" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 transition-colors text-sm md:text-base">
+        Continue shopping
+      </a>
     </div>
   {% else %}
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
-      <!-- Left column: Cart items + Recommendations -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-10">
+      <!-- Left: Cart items + Recommendations -->
       <div class="lg:col-span-2 space-y-8">
         <!-- Cart items -->
-        <div class="bg-white rounded-3xl border border-gray-200 shadow-sm overflow-hidden">
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
           <form action="{{ routes.cart_url }}" method="post" id="cart-form">
-            <ul class="divide-y divide-gray-200">
+            <ul class="divide-y divide-gray-100">
               {% for item in cart.items %}
-                <li class="p-4 md:p-6 flex flex-col sm:flex-row gap-4">
-                  <a href="{{ item.url }}" class="shrink-0 w-full sm:w-28 h-28 rounded-xl overflow-hidden bg-gray-100">
+                <li class="p-5 md:p-6 flex flex-col sm:flex-row gap-5 hover:bg-gray-50/50 transition-colors">
+                  <a href="{{ item.url }}" class="shrink-0 w-full sm:w-24 h-24 md:w-28 md:h-28 rounded-xl overflow-hidden bg-gray-50 ring-1 ring-gray-100">
                     {% if item.image %}
                       <img src="{{ item.image | image_url: width: 224, height: 224 }}" alt="{{ item.title | escape }}" width="112" height="112" class="w-full h-full object-cover">
                     {% else %}
@@ -31,27 +49,29 @@
                     {% endif %}
                   </a>
                   <div class="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                    <div>
-                      <div class="flex items-start justify-between gap-2">
-                        <a href="{{ item.url }}" class="font-semibold text-gray-900 hover:text-gray-600">{{ item.product.title }}</a>
-                        <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" class="text-red-500 hover:text-red-600 shrink-0" aria-label="Remove">&#10005;</a>
+                    <div class="min-w-0">
+                      <div class="flex items-start justify-between gap-3">
+                        <a href="{{ item.url }}" class="font-semibold text-gray-900 hover:text-gray-600 transition-colors line-clamp-2 text-sm md:text-base">{{ item.product.title }}</a>
+                        <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity=0" class="shrink-0 p-1.5 -m-1.5 text-gray-400 hover:text-red-600 rounded-lg hover:bg-red-50 transition-colors" aria-label="Remove {{ item.product.title }}">
+                          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                        </a>
                       </div>
                       {% if item.variant.title != 'Default Title' %}
                         <p class="text-sm text-gray-500 mt-0.5">{{ item.variant.title }}</p>
                       {% endif %}
-                      <div class="flex items-center gap-2 mt-2">
+                      <div class="flex items-center gap-2 mt-2 flex-wrap">
                         {% if item.original_line_price > item.final_line_price %}
                           <span class="text-gray-400 line-through text-sm">{{ item.original_price | money }}</span>
                         {% endif %}
                         <span class="font-semibold text-gray-900">{{ item.final_price | money }}</span>
                       </div>
                     </div>
-                    <div class="flex items-center gap-4">
-                      <div class="flex items-center border border-gray-300 rounded-lg overflow-hidden">
-                        <label for="qty-{{ forloop.index }}" class="sr-only">Quantity</label>
-                        <button type="button" class="cart-qty-minus px-3 py-2 text-gray-600 hover:bg-gray-100" data-line="{{ forloop.index }}" data-current="{{ item.quantity }}" aria-label="Decrease">−</button>
-                        <input type="number" name="updates[]" id="qty-{{ forloop.index }}" value="{{ item.quantity }}" min="0" class="cart-qty-input w-12 text-center border-0 border-x border-gray-300 py-2 text-sm font-medium">
-                        <button type="button" class="cart-qty-plus px-3 py-2 text-gray-600 hover:bg-gray-100" data-line="{{ forloop.index }}" data-current="{{ item.quantity }}" aria-label="Increase">+</button>
+                    <div class="flex items-center gap-4 flex-wrap">
+                      <div class="inline-flex items-center border border-gray-200 rounded-xl overflow-hidden bg-white">
+                        <label for="qty-{{ forloop.index }}" class="sr-only">Quantity for {{ item.product.title }}</label>
+                        <button type="button" class="cart-qty-minus p-3 text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors" data-line="{{ forloop.index }}" aria-label="Decrease quantity">−</button>
+                        <input type="number" name="updates[]" id="qty-{{ forloop.index }}" value="{{ item.quantity }}" min="0" class="cart-qty-input w-11 text-center border-0 border-x border-gray-200 py-2.5 text-sm font-medium bg-transparent focus:ring-0 focus:outline-none">
+                        <button type="button" class="cart-qty-plus p-3 text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors" data-line="{{ forloop.index }}" aria-label="Increase quantity">+</button>
                       </div>
                       <span class="font-semibold text-gray-900 whitespace-nowrap">Total: {{ item.final_line_price | money }}</span>
                     </div>
@@ -59,38 +79,39 @@
                 </li>
               {% endfor %}
             </ul>
-            <div class="p-4 md:p-6 border-t border-gray-200">
-              <button type="submit" name="update" class="px-4 py-2 text-sm font-medium text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50">Update cart</button>
+            <div class="p-4 md:p-5 border-t border-gray-100 bg-gray-50/50">
+              <button type="submit" name="update" class="px-5 py-2.5 text-sm font-medium text-gray-700 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-colors">Update cart</button>
             </div>
           </form>
         </div>
 
         <!-- Recommended products -->
         {% if rec_collection.products.size > 0 %}
-          <div class="bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden p-6">
-            <h2 class="text-lg font-bold text-gray-900 mb-6">Great choices before completing your order</h2>
+          <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden p-6">
+            <h2 class="text-base font-bold text-gray-900 mb-1">Great choices before completing your order</h2>
+            <p class="text-sm text-gray-500 mb-6">You might like these</p>
             <div class="grid grid-cols-2 gap-4">
               {% for product in rec_collection.products limit: 4 %}
-                <div class="border border-gray-200 rounded-xl overflow-hidden flex flex-col">
-                  <a href="{{ product.url }}" class="block aspect-square bg-gray-100">
+                <div class="group border border-gray-100 rounded-xl overflow-hidden flex flex-col hover:border-gray-200 hover:shadow-md transition-all duration-200">
+                  <a href="{{ product.url }}" class="block aspect-square bg-gray-50 overflow-hidden">
                     {% if product.featured_image %}
-                      <img src="{{ product.featured_image | image_url: width: 400, height: 400 }}" alt="{{ product.featured_image.alt | escape }}" width="200" height="200" class="w-full h-full object-cover">
+                      <img src="{{ product.featured_image | image_url: width: 400, height: 400 }}" alt="{{ product.featured_image.alt | escape }}" width="200" height="200" class="w-full h-full object-cover group-hover:scale-[1.02] transition-transform duration-300">
                     {% else %}
                       {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
                     {% endif %}
                   </a>
-                  <div class="p-3 flex-1 flex flex-col">
-                    <a href="{{ product.url }}" class="font-medium text-gray-900 text-sm line-clamp-2 hover:text-gray-600">{{ product.title }}</a>
-                    <div class="flex items-center gap-2 mt-1 flex-wrap">
+                  <div class="p-4 flex-1 flex flex-col">
+                    <a href="{{ product.url }}" class="font-medium text-gray-900 text-sm line-clamp-2 hover:text-gray-600 transition-colors">{{ product.title }}</a>
+                    <div class="flex items-center gap-2 mt-2 flex-wrap">
                       {% if product.compare_at_price > product.price %}
                         <span class="text-gray-400 line-through text-xs">{{ product.compare_at_price | money }}</span>
                       {% endif %}
                       <span class="font-semibold text-gray-900">{{ product.price | money }}</span>
                     </div>
                     {% if product.available %}
-                      <button type="button" class="add-to-cart-btn mt-2 w-full py-2 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-800" data-variant-id="{{ product.selected_or_first_available_variant.id }}">Add to cart</button>
+                      <button type="button" class="add-to-cart-btn mt-3 w-full py-2.5 bg-gray-900 text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition-colors" data-variant-id="{{ product.selected_or_first_available_variant.id }}">Add to cart</button>
                     {% else %}
-                      <button disabled class="mt-2 w-full py-2 bg-gray-300 text-gray-500 text-sm rounded-lg cursor-not-allowed">Sold out</button>
+                      <span class="mt-3 w-full py-2.5 text-center text-sm text-gray-400 bg-gray-100 rounded-lg cursor-not-allowed">Sold out</span>
                     {% endif %}
                   </div>
                 </div>
@@ -100,34 +121,34 @@
         {% endif %}
       </div>
 
-      <!-- Right column: Order summary (sticky on desktop) -->
+      <!-- Right: Order summary -->
       <div class="lg:col-span-1">
-        <div class="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 lg:sticky lg:top-24">
-          <h2 class="text-lg font-bold text-gray-900 mb-6">Order Summary</h2>
+        <div class="bg-white rounded-2xl border border-gray-100 shadow-sm p-6 lg:sticky lg:top-24">
+          <h2 class="text-base font-bold text-gray-900 mb-5">Order summary</h2>
           <dl class="space-y-3 text-sm">
-            <div class="flex justify-between">
-              <dt class="text-gray-600">Total items amount</dt>
-              <dd class="font-semibold text-gray-900">{{ cart.total_price | money }}</dd>
+            <div class="flex justify-between text-gray-600">
+              <dt>Subtotal</dt>
+              <dd class="font-medium text-gray-900">{{ cart.total_price | money }}</dd>
             </div>
           </dl>
-          <div class="mt-6 pt-4 border-t border-gray-200">
-            <p class="text-sm text-gray-600 mb-2">Do you have a promo code?</p>
+          <div class="mt-5 pt-5 border-t border-gray-100">
+            <p class="text-sm font-medium text-gray-700 mb-2">Have a promo code?</p>
+            <p class="text-xs text-gray-500 mb-3">Discount codes can be applied at checkout.</p>
             <div class="flex gap-2">
-              <input type="text" placeholder="Apply Coupon" class="flex-1 px-3 py-2 border border-gray-300 rounded-lg text-sm" disabled aria-label="Coupon code (applied at checkout)">
-              <button type="button" class="px-4 py-2 bg-black text-white text-sm font-medium rounded-lg hover:bg-gray-800" disabled>Apply</button>
+              <input type="text" placeholder="Coupon code" class="flex-1 px-3 py-2.5 border border-gray-200 rounded-xl text-sm bg-gray-50 text-gray-400" disabled aria-label="Coupon code (applied at checkout)">
+              <button type="button" class="px-4 py-2.5 text-sm font-medium text-gray-400 bg-gray-100 rounded-xl cursor-not-allowed" disabled>Apply</button>
             </div>
-            <p class="text-xs text-gray-400 mt-1">Discount codes can be applied at checkout.</p>
           </div>
-          <dl class="mt-6 pt-4 border-t border-gray-200">
-            <div class="flex justify-between items-center">
-              <dt class="font-semibold text-gray-900">Final total amount</dt>
+          <dl class="mt-5 pt-5 border-t border-gray-100">
+            <div class="flex justify-between items-baseline">
+              <dt class="font-semibold text-gray-900">Total</dt>
               <dd class="text-xl font-bold text-gray-900">{{ cart.total_price | money }}</dd>
             </div>
           </dl>
           <form action="{{ routes.cart_url }}" method="post" class="mt-6">
-            <button type="submit" name="checkout" class="w-full py-4 bg-black text-white font-bold rounded-xl hover:bg-gray-800">Submit order</button>
+            <button type="submit" name="checkout" class="w-full py-4 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-offset-2">Checkout</button>
           </form>
-          <a href="{{ routes.all_products_collection_url }}" class="block mt-4 text-center text-sm text-gray-600 hover:underline">Continue shopping</a>
+          <a href="{{ routes.all_products_collection_url }}" class="block mt-4 text-center text-sm text-gray-500 hover:text-gray-900 transition-colors">Continue shopping</a>
         </div>
       </div>
     </div>
@@ -138,6 +159,7 @@
 document.querySelectorAll('.cart-qty-minus').forEach(function(btn) {
   btn.addEventListener('click', function() {
     var input = document.getElementById('qty-' + this.dataset.line);
+    if (!input) return;
     var val = parseInt(input.value, 10) || 0;
     if (val > 0) input.value = val - 1;
   });
@@ -145,6 +167,7 @@ document.querySelectorAll('.cart-qty-minus').forEach(function(btn) {
 document.querySelectorAll('.cart-qty-plus').forEach(function(btn) {
   btn.addEventListener('click', function() {
     var input = document.getElementById('qty-' + this.dataset.line);
+    if (!input) return;
     var val = parseInt(input.value, 10) || 0;
     input.value = val + 1;
   });
