@@ -462,7 +462,7 @@
               </div>
               <div class="lux-grid__title">{{ item.title }}</div>
               {% if item.object_type == 'product' %}
-                <div class="lux-grid__price">{{ item.price | money }}</div>
+                <div class="lux-grid__price">{{ item.price | money_without_currency }} {{ cart.currency.iso_code }}</div>
               {% endif %}
             </a>
           {% endfor %}
@@ -585,9 +585,19 @@
 
           products.forEach(function(p) {
             var title = escapeHtml(p.title);
-            var price = escapeHtml(p.price || '');
+            var rawPrice = p.price || '';
             var href = (p.url || '').replace(/"/g, '&quot;');
             var img = (p.image || '').replace(/"/g, '&quot;');
+
+            // Move currency prefix to suffix: "LE 5,000.00" → "5,000.00 LE"
+            var price = rawPrice.replace(/^([^\d\s]+)\s*([\d,. ]+)$/, '$2 $1').trim();
+            if (price === rawPrice) {
+              // Fallback: strip leading non-numeric chars and append them
+              price = rawPrice.replace(/^([^0-9]*)([0-9].*)$/, function(m, curr, num) {
+                return num.trim() + ' ' + curr.trim();
+              });
+            }
+            price = escapeHtml(price);
 
             html += '<a href="' + href + '" class="lux-live__card">';
             html += '<div class="lux-live__card-img">';
