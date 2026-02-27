@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center py-4">
       
       <!-- LEFT SIDE: Cart, Account, Search Icons -->
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-4 relative" style="z-index:60;">
         <a href="{{ routes.cart_url }}" class="relative text-black hover:text-gray-600 transition-colors">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -11,11 +11,28 @@
           <span id="cart-count-badge" class="absolute -top-2 -right-2 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold" style="background-color: #000000;">{{ cart.item_count }}</span>
         </a>
         
-        <button type="button" class="text-black hover:text-gray-600 transition-colors">
+        <a href="{{ routes.search_url }}" id="search-toggle" class="text-black hover:text-gray-600 transition-colors" aria-label="Search" style="display:flex;align-items:center;-webkit-tap-highlight-color:transparent;">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
           </svg>
-        </button>
+        </a>
+
+        <!-- Desktop Search Bar (Slides to the right) -->
+        <div id="desktop-search" class="absolute left-full ml-4 hidden md:flex items-center overflow-hidden transition-all duration-300 w-0 opacity-0 pointer-events-none bg-white rounded-full shadow-md z-50 h-10 border border-gray-100">
+          <form action="{{ routes.search_url }}" method="get" class="flex flex-1 min-w-0 h-full m-0">
+            <input type="search" name="q" placeholder="Search..." class="flex-1 min-w-0 h-full pl-4 pr-2 outline-none bg-transparent text-sm border-none">
+            <button type="submit" class="px-3 text-gray-500 hover:text-black shrink-0" aria-label="Search">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+              </svg>
+            </button>
+            <button type="button" id="desktop-search-close" class="md:flex hidden items-center justify-center w-10 h-10 text-gray-400 hover:text-black shrink-0" aria-label="Close search">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </form>
+        </div>
       </div>
 
       <!-- CENTER: STORE NAME / LOGO -->
@@ -40,6 +57,21 @@
         </svg>
       </button>
 
+    </div>
+  </div>
+
+  <!-- MOBILE SEARCH DROPDOWN -->
+  <div id="mobile-search" class="md:hidden overflow-hidden transition-all duration-300 max-h-0 bg-white/90 backdrop-blur-xl border-gray-200">
+    <div class="px-4 py-3 flex items-center gap-2">
+      <form action="{{ routes.search_url }}" method="get" class="flex flex-1 min-w-0 m-0 border border-gray-300 rounded-lg overflow-hidden bg-white shadow-sm">
+        <input type="search" name="q" placeholder="Search products..." class="flex-1 min-w-0 px-4 py-2 outline-none text-sm border-none bg-transparent">
+        <button type="submit" class="px-4 bg-black text-white text-sm font-semibold hover:bg-gray-800 transition-colors">Search</button>
+      </form>
+      <button type="button" id="mobile-search-close" class="md:hidden flex items-center justify-center w-10 h-10 shrink-0 text-gray-500 hover:text-black border border-gray-300 rounded-lg" aria-label="Close search">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
   </div>
 
@@ -100,5 +132,35 @@
     const mobileMenu = document.getElementById('mobile-menu');
     mobileMenu.classList.toggle('hidden');
   });
+
+  // Search toggle — on mobile the <a> href navigates naturally;
+  // on desktop we intercept to show the slide-out bar instead.
+  document.getElementById('search-toggle').addEventListener('click', function(e) {
+    if (window.innerWidth >= 768) {
+      e.preventDefault();
+      var desktopSearch = document.getElementById('desktop-search');
+      if (desktopSearch.classList.contains('w-0')) {
+        desktopSearch.classList.remove('w-0', 'opacity-0', 'pointer-events-none');
+        desktopSearch.classList.add('w-64', 'opacity-100');
+        setTimeout(function() { desktopSearch.querySelector('input[type="search"]').focus(); }, 300);
+      } else {
+        desktopSearch.classList.add('w-0', 'opacity-0', 'pointer-events-none');
+        desktopSearch.classList.remove('w-64', 'opacity-100');
+      }
+    }
+    // On mobile: default <a> href navigation takes over — no JS needed.
+  });
+
+  function closeHeaderSearch() {
+    const desktopSearch = document.getElementById('desktop-search');
+    desktopSearch.classList.add('w-0', 'opacity-0', 'pointer-events-none');
+    desktopSearch.classList.remove('w-64', 'opacity-100');
+    const mobileSearch = document.getElementById('mobile-search');
+    mobileSearch.classList.add('max-h-0');
+    mobileSearch.classList.remove('max-h-24', 'border-t');
+  }
+
+  document.getElementById('desktop-search-close').addEventListener('click', closeHeaderSearch);
+  document.getElementById('mobile-search-close').addEventListener('click', closeHeaderSearch);
 </script>
   
