@@ -109,8 +109,10 @@
               <div class="qty-group">
                 <button type="button" class="cart-qty-minus qty-btn" data-line="{{ forloop.index }}" aria-label="Decrease">−</button>
                 <div class="qty-sep"></div>
-                <label for="qty-{{ forloop.index }}" style="display:flex;align-items:center;justify-content:center;width:48px;">Quantity</label>
-                <input type="number" name="updates[]" id="qty-{{ forloop.index }}" value="{{ item.quantity }}" min="0" class="qty-input">
+                <div class="qty-middle">
+                  <label for="qty-{{ forloop.index }}" class="sr-only">Quantity</label>
+                  <input type="number" name="updates[]" id="qty-{{ forloop.index }}" value="{{ item.quantity }}" min="0" class="qty-input">
+                </div>
                 <div class="qty-sep"></div>
                 <button type="button" class="cart-qty-plus qty-btn" data-line="{{ forloop.index }}" aria-label="Increase">+</button>
               </div>
@@ -181,7 +183,7 @@
       <hr class="summary-card__divider">
       <div class="summary-card__section">
         <form action="{{ routes.cart_url }}" method="post">
-          <button type="submit" name="checkout" class="summary-card__submit">Checkout</button>
+          <button type="submit" name="checkout" class="summary-card__submit">Submit order</button>
         </form>
       </div>
     </div>
