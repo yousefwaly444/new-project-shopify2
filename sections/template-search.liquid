@@ -462,7 +462,8 @@
               </div>
               <div class="lux-grid__title">{{ item.title }}</div>
               {% if item.object_type == 'product' %}
-                <div class="lux-grid__price">{{ item.price | money_without_currency }} {{ cart.currency.iso_code }}</div>
+                {%- assign currency_symbol = shop.money_format | split: '{{amount}}' | first | strip -%}
+                <div class="lux-grid__price">{{ item.price | money_without_currency }} {{ currency_symbol }}</div>
               {% endif %}
             </a>
           {% endfor %}
