@@ -130,6 +130,25 @@
     flex-shrink: 0;
   }
 
+  .lux-search__close {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f0f0f0;
+    cursor: pointer;
+    flex-shrink: 0;
+    margin-left: 4px;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.2s;
+    padding: 0;
+  }
+  .lux-search__close:hover { background: #e0e0e0; transform: rotate(90deg); }
+  .lux-search__close svg { width: 16px; height: 16px; color: #555; }
+
   /* Live Results (inline below search bar) */
   .lux-live {
     margin-top: 32px;
@@ -405,6 +424,11 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
           </svg>
         </button>
+        <a href="{{ routes.root_url }}" class="lux-search__close" aria-label="Close search and return home">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </a>
       </div>
     </form>
 
