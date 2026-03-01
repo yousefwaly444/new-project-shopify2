@@ -1,7 +1,7 @@
 {% assign current_variant = product.selected_or_first_available_variant %}
 {% assign featured_image = current_variant.featured_image | default: product.featured_image %}
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-2 pb-8">
   <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
     
     <!-- Left: Image Gallery -->
@@ -38,7 +38,7 @@
       </div>
     
     <!-- Right: Product Details -->
-    <div class="space-y-6">
+    <div class="space-y-3">
       <h1 class="text-3xl md:text-4xl font-bold text-gray-900">{{ product.title }}</h1>
       
       <!-- Price -->
