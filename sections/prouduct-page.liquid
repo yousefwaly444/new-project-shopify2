@@ -67,7 +67,7 @@
             {% if block.settings.badge_text != blank %}
               <div class="flex items-center gap-2 text-gray-900" {{ block.shopify_attributes }}>
                 {% if block.settings.badge_icon != blank %}
-                  <img src="{{ block.settings.badge_icon | image_url: width: 20, height: 20 }}" width="20" height="20" alt="" class="shrink-0">
+                  <img src="{{ block.settings.badge_icon | image_url: width: 24, height: 24 }}" width="24" height="24" alt="" class="shrink-0">
                 {% else %}
                   <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
                 {% endif %}
@@ -348,7 +348,7 @@
         {
           "type": "image_picker",
           "id": "badge_icon",
-          "label": "Icon (optional)"
+          "label": "Icon (optional) Recommended size: 24x24 Pixels"
         },
         {
           "type": "text",
@@ -371,7 +371,7 @@
         {
           "type": "image_picker",
           "id": "icon",
-          "label": "Icon image"
+          "label": "Icon image, Recommended size: 80x80 Pixels"
         },
         {
           "type": "text",
