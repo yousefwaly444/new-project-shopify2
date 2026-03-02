@@ -22,7 +22,7 @@
         "badge_returns": {
           "type": "badge",
           "settings": {
-            "badge_icon": "shopify://shop_images/Delivery--Streamline-Carbon_2.svg",
+            "badge_icon": "shopify://shop_images/Redo--Streamline-Carbon.svg",
             "badge_text": "Easy return policy"
           }
         },
