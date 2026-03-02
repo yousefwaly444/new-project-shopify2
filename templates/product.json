@@ -15,18 +15,21 @@
         "badge_delivery": {
           "type": "badge",
           "settings": {
+            "badge_icon": "shopify://shop_images/Delivery--Streamline-Carbon_1.svg",
             "badge_text": "Free express delivery"
           }
         },
         "badge_returns": {
           "type": "badge",
           "settings": {
+            "badge_icon": "shopify://shop_images/Delivery--Streamline-Carbon_2.svg",
             "badge_text": "Easy return policy"
           }
         },
         "fragrance_note_L3z9gJ": {
           "type": "fragrance_note",
           "settings": {
+            "assigned_product": "",
             "icon": "shopify://shop_images/fruit-icon_1.svg",
             "subtitle": "Apple and mango",
             "duration": "30 – 50 min",
@@ -36,6 +39,7 @@
         "fragrance_note_YT6KBb": {
           "type": "fragrance_note",
           "settings": {
+            "assigned_product": "",
             "icon": "shopify://shop_images/strawberry-fruit-icon_1.svg",
             "subtitle": "strawberry",
             "duration": "3 – 5 h",
@@ -45,6 +49,7 @@
         "fragrance_note_VdRhqd": {
           "type": "fragrance_note",
           "settings": {
+            "assigned_product": "",
             "icon": "shopify://shop_images/nutrition-icon.svg",
             "subtitle": "Lightest First Impression",
             "duration": "1 – 2 h",
@@ -60,7 +65,8 @@
         "fragrance_note_VdRhqd"
       ],
       "settings": {
-        "fragrance_heading": "Fragrance Notes"
+        "fragrance_heading": "Fragrance Notes",
+        "related_heading": "Product you may like"
       }
     }
   },
