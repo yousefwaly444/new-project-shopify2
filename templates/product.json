@@ -49,10 +49,10 @@
         "fragrance_note_VdRhqd": {
           "type": "fragrance_note",
           "settings": {
-            "assigned_product": "",
+            "assigned_product": "{{ product }}",
             "icon": "shopify://shop_images/nutrition-icon.svg",
-            "subtitle": "Lightest First Impression",
-            "duration": "1 – 2 h",
+            "subtitle": "apple and barley",
+            "duration": "6 - 10 h",
             "note_label": "base"
           }
         }
