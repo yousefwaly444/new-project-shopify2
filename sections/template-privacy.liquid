@@ -1,0 +1,180 @@
+{% comment %}
+  Modern Privacy Policy (and other policy) page section.
+  Use with page template "privacy" and assign to your Privacy policy page in Theme Editor.
+{% endcomment %}
+
+<div class="privacy-page" style="--privacy-accent: {{ section.settings.accent_color }};">
+  <div class="privacy-page__container">
+    {% if section.settings.show_title and page.title != blank %}
+      <header class="privacy-page__header">
+        <h1 class="privacy-page__title">{{ page.title }}</h1>
+        {% if section.settings.show_updated and page.updated_at %}
+          <p class="privacy-page__updated">Last updated {{ page.updated_at | date: '%B %d, %Y' }}</p>
+        {% endif %}
+      </header>
+    {% endif %}
+
+    <div class="privacy-page__content rte">
+      {% if page.content != blank %}
+        {{ page.content }}
+      {% else %}
+        <p class="privacy-page__empty">Add your privacy policy content in Shopify Admin: <strong>Settings → Legal → Privacy policy</strong>, then create a page with handle <code>privacy-policy</code> and assign this template to it.</p>
+      {% endif %}
+    </div>
+
+    <div class="privacy-page__back">
+      <a href="{{ routes.root_url }}" class="privacy-page__back-link">
+        <svg class="privacy-page__back-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+        </svg>
+        Back to home
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  .privacy-page {
+    padding: 2.5rem 1.25rem 4rem;
+    min-height: 60vh;
+    background: linear-gradient(180deg, #fafafa 0%, #ffffff 12rem);
+  }
+  @media (min-width: 768px) {
+    .privacy-page { padding: 3.5rem 1.5rem 5rem; }
+  }
+
+  .privacy-page__container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .privacy-page__header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .privacy-page__title {
+    font-size: clamp(1.75rem, 4vw, 2.25rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: #111827;
+    margin: 0 0 0.5rem 0;
+    line-height: 1.2;
+  }
+
+  .privacy-page__updated {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0;
+  }
+
+  .privacy-page__content {
+    font-size: 1rem;
+    line-height: 1.75;
+    color: #374151;
+  }
+
+  .privacy-page__content.rte h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+    margin: 2.25rem 0 0.75rem 0;
+    padding-bottom: 0.25rem;
+  }
+  .privacy-page__content.rte h2:first-child { margin-top: 0; }
+
+  .privacy-page__content.rte h3 {
+    font-size: 1.0625rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 1.5rem 0 0.5rem 0;
+  }
+
+  .privacy-page__content.rte p {
+    margin: 0 0 1rem 0;
+  }
+
+  .privacy-page__content.rte ul,
+  .privacy-page__content.rte ol {
+    margin: 0 0 1rem 0;
+    padding-left: 1.5rem;
+  }
+  .privacy-page__content.rte li { margin-bottom: 0.35rem; }
+
+  .privacy-page__content.rte a {
+    color: var(--privacy-accent, #111827);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .privacy-page__content.rte a:hover { opacity: 0.85; }
+
+  .privacy-page__content.rte strong { font-weight: 600; color: #111827; }
+  .privacy-page__content.rte code {
+    font-size: 0.9em;
+    padding: 0.15em 0.4em;
+    background: #f3f4f6;
+    border-radius: 4px;
+    color: #374151;
+  }
+
+  .privacy-page__empty {
+    padding: 1.5rem;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px dashed #d1d5db;
+  }
+
+  .privacy-page__back {
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .privacy-page__back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    color: var(--privacy-accent, #111827);
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .privacy-page__back-link:hover { opacity: 0.8; }
+
+  .privacy-page__back-icon {
+    flex-shrink: 0;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Privacy / Policy Page",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_title",
+      "label": "Show page title",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_updated",
+      "label": "Show last updated date",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color (links, back button)",
+      "default": "#111827"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Privacy / Policy Page"
+    }
+  ]
+}
+{% endschema %}
