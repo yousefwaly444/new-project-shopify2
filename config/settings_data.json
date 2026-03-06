@@ -17,12 +17,21 @@
       "custom-footer": {
         "type": "custom-footer",
         "settings": {
-          "email": "hello@yourstore.com",
+          "contact_url": "shopify://pages/contact-1",
+          "refunds_url": "shopify://pages/return-police",
+          "privacy_policy_url": "shopify://pages/contact",
+          "terms_url": "",
           "instagram_url": "https://instgram.com",
-          "facebook_url": "https://facebook.com",
           "tiktok_url": "https://tiktok.com",
-          "twitter_url": "",
-          "policy_page": "contact"
+          "facebook_url": "https://facebook.com"
+        }
+      },
+      "template-privacy": {
+        "type": "template-privacy",
+        "settings": {
+          "show_title": true,
+          "show_updated": true,
+          "accent_color": "#111827"
         }
       }
     },
